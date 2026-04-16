@@ -1,17 +1,13 @@
 import { PRINCIPLES } from '../constants/categories.js';
 
 function PrincipleBadge({ principle }) {
-  const def = PRINCIPLES.find(p => p.id === principle.id);
+  // Handle both string format (new) and object format (legacy)
+  const name = typeof principle === 'string' ? principle : principle.name;
+  const def = PRINCIPLES.find(p => p.name === name || p.zh === name);
   return (
     <div className="rounded-card p-3.5" style={{ background: 'var(--sage-100)', boxShadow: 'var(--shadow-inner-soft)' }}>
-      <div className="flex items-center gap-2 mb-1">
-        <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--sage-700)' }}>
-          原則 {principle.id}
-        </span>
-        <span className="text-[11px]" style={{ color: 'var(--ink-tertiary)' }}>{def?.zh}</span>
-      </div>
-      <p className="text-[12px] font-semibold" style={{ color: 'var(--sage-ink)' }}>{principle.name}</p>
-      <p className="text-[12px] leading-relaxed mt-1" style={{ color: 'var(--ink-secondary)' }}>{principle.relevance}</p>
+      <p className="text-[12px] font-semibold" style={{ color: 'var(--sage-ink)' }}>{name}</p>
+      {def && <p className="text-[11px] mt-0.5" style={{ color: 'var(--ink-tertiary)' }}>{def.zh}</p>}
     </div>
   );
 }
@@ -39,7 +35,7 @@ export default function RationalePanel({ rationale }) {
         <div>
           <p className="section-label">五大原則對應</p>
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-            {rationale.principles.map(p => <PrincipleBadge key={p.id} principle={p} />)}
+            {rationale.principles.map((p, i) => <PrincipleBadge key={typeof p === 'string' ? p : (p.id ?? i)} principle={p} />)}
           </div>
         </div>
       )}
