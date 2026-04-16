@@ -40,11 +40,13 @@ export function quizReducer(state, action) {
       return { ...state, selectedChoice: action.payload };
 
     case 'REVEAL': {
-      const question = state.sessionQuestions[state.currentIndex];
-      const isCorrect = action.payload === question.correctId;
+      const qs = [...state.sessionQuestions];
+      const isCorrect = action.payload === qs[state.currentIndex].correctId;
+      qs[state.currentIndex] = { ...qs[state.currentIndex], selectedChoice: action.payload };
       return {
         ...state,
         phase: PHASES.REVEALED,
+        sessionQuestions: qs,
         score: {
           correct: state.score.correct + (isCorrect ? 1 : 0),
           total: state.score.total + 1,

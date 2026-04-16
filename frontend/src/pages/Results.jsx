@@ -40,19 +40,33 @@ export default function Results() {
         <div>
           <p className="section-label">題目回顧</p>
           <div className="space-y-2.5">
-            {sessionQuestions.map((q, i) => (
-              <div key={q.id} className="card-base">
-                <div className="flex items-start gap-2.5">
-                  <span className="text-[11px] font-bold mt-0.5 flex-shrink-0" style={{ color: 'var(--ink-tertiary)' }}>Q{i + 1}</span>
-                  <div>
-                    <p className="text-[12px] leading-relaxed line-clamp-2" style={{ color: 'var(--ink-secondary)' }}>{q.scenario}</p>
-                    <p className="text-[11px] mt-1" style={{ color: 'var(--ink-tertiary)' }}>
-                      正確答案：<span className="font-semibold" style={{ color: 'var(--sage-700)' }}>{q.correctId}</span>
+            {sessionQuestions.map((q, i) => {
+              const isCorrect = q.selectedChoice === q.correctId;
+              const correctText = q.choices.find(c => c.id === q.correctId)?.text;
+              const selectedText = q.choices.find(c => c.id === q.selectedChoice)?.text;
+              const borderColor = isCorrect ? 'var(--sage-500)' : 'var(--clay-500)';
+              return (
+                <div key={q.id} className="card-base" style={{ borderLeft: `3px solid ${borderColor}` }}>
+                  <p className="text-[12px] leading-relaxed mb-2" style={{ color: 'var(--ink-primary)' }}>{q.scenario}</p>
+                  {isCorrect ? (
+                    <p className="text-[12px]" style={{ color: 'var(--sage-700)' }}>
+                      ✅ {correctText}
                     </p>
-                  </div>
+                  ) : (
+                    <p className="text-[12px]">
+                      <span style={{ color: 'var(--clay-500)' }}>❌ {selectedText}</span>
+                      <span style={{ color: 'var(--ink-tertiary)' }}> · </span>
+                      <span style={{ color: 'var(--sage-700)' }}>✅ {correctText}</span>
+                    </p>
+                  )}
+                  {q.rationale?.explanation && (
+                    <p className="text-[11px] mt-2 leading-relaxed" style={{ color: 'var(--ink-tertiary)' }}>
+                      {q.rationale.explanation}
+                    </p>
+                  )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
