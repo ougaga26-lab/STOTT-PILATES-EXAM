@@ -1,4 +1,6 @@
-const API_BASE = '/api';
+const API_BASE = import.meta.env.VITE_WORKER_URL
+  ? `${import.meta.env.VITE_WORKER_URL}/api`
+  : '/api';
 
 /**
  * @param {{ category: string, excludeIds: string[] }} params
