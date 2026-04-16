@@ -80,6 +80,25 @@ export default function Home() {
           {CATEGORIES.map(cat => <CategoryCard key={cat.id} cat={cat} />)}
         </div>
 
+        {/* Flashcard shortcut */}
+        <button
+          className="w-full mt-4 rounded-card p-4 flex items-center gap-4 text-left"
+          style={{ background: 'var(--surface-base)', boxShadow: 'var(--shadow-inner-soft)', border: 'none', cursor: 'pointer', transition: 'all 200ms var(--ease)' }}
+          onMouseEnter={e => { e.currentTarget.style.boxShadow = 'var(--shadow-raised)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+          onMouseLeave={e => { e.currentTarget.style.boxShadow = 'var(--shadow-inner-soft)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+          onClick={() => dispatch({ type: 'SHOW_FLASHCARDS' })}
+        >
+          <div className="w-10 h-10 rounded-btn flex items-center justify-center text-xl flex-shrink-0"
+            style={{ background: 'var(--surface-raised)', boxShadow: 'var(--shadow-raised)' }}>
+            🃏
+          </div>
+          <div>
+            <p className="font-semibold text-sm" style={{ color: 'var(--ink-primary)' }}>術語閃卡</p>
+            <p className="text-xs" style={{ color: 'var(--ink-tertiary)' }}>38 個官方動作名稱 · 英中對照</p>
+          </div>
+          <span className="ml-auto text-sm" style={{ color: 'var(--ink-tertiary)' }}>→</span>
+        </button>
+
         {/* Footer */}
         <p className="text-center text-[11px] mt-8" style={{ color: 'var(--ink-tertiary)' }}>
           Powered by Google Gemini · 非官方學習工具

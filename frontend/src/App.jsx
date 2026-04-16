@@ -3,9 +3,11 @@ import { PHASES } from './reducers/quizReducer.js';
 import Home from './pages/Home.jsx';
 import Quiz from './pages/Quiz.jsx';
 import Results from './pages/Results.jsx';
+import Flashcards from './pages/Flashcards.jsx';
 
 function AppRouter() {
-  const { phase } = useQuiz();
+  const { phase, view } = useQuiz();
+  if (view === 'FLASHCARDS') return <Flashcards />;
   if (phase === PHASES.SELECT) return <Home />;
   if (phase === PHASES.COMPLETE) return <Results />;
   return <Quiz />;
