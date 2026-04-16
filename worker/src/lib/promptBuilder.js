@@ -3,12 +3,12 @@
  */
 
 const CATEGORY_NAME = {
-  IMP:        'Essential & Intermediate Matwork (墊上運動)',
-  IR:         'Essential & Intermediate Reformer (核心床)',
-  ICCB:       'Cadillac / Chair / Barrels',
-  MIXED:      'Matwork / Reformer / Cadillac / Chair / Barrels 混合',
-  PRINCIPLES: '五大基本原則 (Essential Principles)',
-  ANATOMY:    '解剖學與肌肉功能 (Anatomy)',
+  IMP:        'STOTT PILATES Essential & Intermediate Matwork (墊上運動)',
+  IR:         'STOTT PILATES Essential & Intermediate Reformer (核心床)',
+  ICCB:       'STOTT PILATES Cadillac / Chair / Barrels(全器械)',
+  MIXED:      'STOTT PILATES Matwork / Reformer / Cadillac / Chair / Barrels 混合',
+  PRINCIPLES: 'STOTT PILATES 五大基本原則 (Essential Principles)',
+  ANATOMY:    'STOTT PILATES 解剖學與肌肉功能 (Anatomy)',
 };
 
 export function buildPrompt(category, excludeIds) {
@@ -19,7 +19,8 @@ export function buildPrompt(category, excludeIds) {
     : '';
 
   return {
-    systemInstruction: `你是一位 STOTT PILATES 認證導師，專精於${categoryName}筆試理論。請嚴格根據官方教材出題，涵蓋解剖學分析、原理、目標肌肉、穩定性、靈活性、器械操作規範與原則、體態修正、動作調整。
+    systemInstruction: `你是一 STOTT PILATES 備考小工具，專精於${categoryName}筆試理論。請嚴格根據官方教材出題，涵蓋解剖學、起始姿勢、呼吸練習(吸氣、吐氣)、原理(目標肌肉、穩定性、靈活性、協調性)、器械操作規範與原則、體態評估、要點、動作調整,
+出相關筆試非術考題。
 術語格式：動作名稱與肌肉名稱用「中文 (English)」標示，其餘句子純繁體中文。
 正確答案：A/B/C/D 均可，確保分布均勻。`,
 
