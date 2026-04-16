@@ -10,38 +10,67 @@ const CATEGORY_STYLES = {
   ANATOMY:    { accent: 'var(--clay-700)',  tint: '#F5EEEA',          border: 'var(--clay-300)' },
 };
 
+const ExternalLinkIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ display: 'inline', verticalAlign: 'middle' }}>
+    <path d="M7 1h4v4M11 1L5 7M2 3H1v8h8V9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
 function CategoryCard({ cat }) {
   const dispatch = useQuizDispatch();
   const s = CATEGORY_STYLES[cat.id];
   return (
-    <button
-      className="w-full text-left rounded-card p-5"
-      style={{
-        background: 'var(--surface-raised)',
-        boxShadow: 'var(--shadow-raised)',
-        transition: 'all 200ms var(--ease)',
-        border: 'none',
-        cursor: 'pointer',
-      }}
-      onMouseEnter={e => { e.currentTarget.style.boxShadow = 'var(--shadow-raised-hover)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-      onMouseLeave={e => { e.currentTarget.style.boxShadow = 'var(--shadow-raised)'; e.currentTarget.style.transform = 'translateY(0)'; }}
-      onMouseDown={e => { e.currentTarget.style.boxShadow = 'var(--shadow-inner-deep)'; e.currentTarget.style.transform = 'translateY(1px)'; }}
-      onMouseUp={e => { e.currentTarget.style.boxShadow = 'var(--shadow-raised-hover)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-      onClick={() => dispatch({ type: 'SELECT_CATEGORY', payload: cat.id })}
-    >
-      <p style={{ fontFamily: 'Fraunces, serif', fontSize: 18, fontWeight: 500, color: 'var(--ink-primary)', lineHeight: 1.2 }}>
-        {cat.label}
-      </p>
-      <p style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: s.accent, marginTop: 3 }}>
-        {cat.subtitle}
-      </p>
-      <p style={{ fontSize: 12, color: 'var(--ink-secondary)', marginTop: 8, lineHeight: 1.5 }}>
-        {cat.description}
-      </p>
-      <div style={{ marginTop: 12, fontSize: 11, fontWeight: 600, color: s.accent, display: 'flex', alignItems: 'center', gap: 4 }}>
-        開始練習 <span>→</span>
-      </div>
-    </button>
+    <div>
+      <button
+        className="w-full text-left rounded-card p-5"
+        style={{
+          background: 'var(--surface-raised)',
+          boxShadow: 'var(--shadow-raised)',
+          transition: 'all 200ms var(--ease)',
+          border: 'none',
+          cursor: 'pointer',
+        }}
+        onMouseEnter={e => { e.currentTarget.style.boxShadow = 'var(--shadow-raised-hover)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+        onMouseLeave={e => { e.currentTarget.style.boxShadow = 'var(--shadow-raised)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+        onMouseDown={e => { e.currentTarget.style.boxShadow = 'var(--shadow-inner-deep)'; e.currentTarget.style.transform = 'translateY(1px)'; }}
+        onMouseUp={e => { e.currentTarget.style.boxShadow = 'var(--shadow-raised-hover)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+        onClick={() => dispatch({ type: 'SELECT_CATEGORY', payload: cat.id })}
+      >
+        <p style={{ fontFamily: 'Fraunces, serif', fontSize: 18, fontWeight: 500, color: 'var(--ink-primary)', lineHeight: 1.2 }}>
+          {cat.label}
+        </p>
+        <p style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: s.accent, marginTop: 3 }}>
+          {cat.subtitle}
+        </p>
+        <p style={{ fontSize: 12, color: 'var(--ink-secondary)', marginTop: 8, lineHeight: 1.5 }}>
+          {cat.description}
+        </p>
+        <div style={{ marginTop: 12, fontSize: 11, fontWeight: 600, color: s.accent, display: 'flex', alignItems: 'center', gap: 4 }}>
+          開始練習 <span>→</span>
+        </div>
+      </button>
+      {cat.toolLink && (
+        <a
+          href={cat.toolLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 5,
+            marginTop: 8,
+            marginLeft: 4,
+            fontSize: 11,
+            color: s.accent,
+            textDecoration: 'none',
+            fontWeight: 600,
+          }}
+        >
+          <ExternalLinkIcon />
+          {cat.toolLabel}
+        </a>
+      )}
+    </div>
   );
 }
 

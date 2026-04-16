@@ -12,6 +12,8 @@ export const CATEGORIES = [
     subtitle: 'IR — Essential & Intermediate',
     emoji: '⚙️',
     description: '彈簧設定、阻力路徑、Carriage 安全操作',
+    toolLink: 'https://ougaga26-lab.github.io/STOTT-PILATES-REFORMER/',
+    toolLabel: 'Reformer 動作串聯小工具',
   },
   {
     id: 'ICCB',
@@ -40,6 +42,8 @@ export const CATEGORIES = [
     subtitle: 'Anatomy Focus',
     emoji: '🦴',
     description: '起止點、主動肌/協同肌、離心控制、代償分析',
+    toolLink: 'https://ougaga26-lab.github.io/Musculature-Heaven/',
+    toolLabel: '解剖學字卡小工具',
   },
 ];
 
