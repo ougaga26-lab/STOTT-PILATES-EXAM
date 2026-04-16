@@ -3,28 +3,29 @@
  */
 
 const CATEGORY_SCOPE = {
-  IMP: `科目範圍：Essential & Intermediate Matwork（墊上運動）
+IMP: `科目範圍：Essential & Intermediate Matwork (墊上運動)
 動作包含：Roll Up、Single Leg Stretch、Spine Stretch Forward、Rolling Like a Ball、Teaser、Hundred、Shoulder Bridge 等。
-重點：主動肌功能、五大原則應用、解剖學原理。`,
+重點：動作目標、主動肌、五大原則應用、解剖學原理、重力對軀幹穩定性的影響。`,
 
-  IR: `科目範圍：Essential & Intermediate Reformer（彈簧床）
-動作包含：彈簧設定（輕/中/重彈簧）、Carriage 操作、Footwork、Elephant、Long Stretch、Short Box Series 等。
-重點：器械安全、彈簧阻力應用、離心控制。`,
+  IR: `科目範圍：Essential & Intermediate Reformer (核心床)
+動作包含：Footwork、Elephant、Long Stretch、Short Box Series、Short Spine、抬腿與放腿 (Lift & Lower) 等。
+重點：彈簧設定（輕/中/重）、Carriage (滑車) 操作、齒輪桿 (Gearbar) 與頭枕位置設定、器械安全、阻力帶來的離心控制 (Eccentric Control)。`,
 
-  ICCB: `科目範圍：Cadillac、Chair、Barrels（三種器械）
-動作包含：安全鍊操作、Push Through Bar、Chair 踏板設定、Barrels 脊椎弧度應用。
-重點：器械特性、安全操作、脊椎適應。`,
+  ICCB: `科目範圍：Cadillac、Chair、Barrels (三種器械)
+動作包含：Push-thru Bar (推桿) 操作、安全鍊使用、Chair 踏板設定、Barrels 脊椎弧度應用 (如 Ladder Barrel)。
+重點：器械特性（凱迪拉克、穩定椅、弧脊桶）、安全操作規範、脊椎在不同器械上的適應性。`,
 
   MIXED: `科目範圍：IMP + IR + ICCB 混合
-從墊上、Reformer、Cadillac/Chair/Barrels 中隨機選一個出題，並在 category 欄位填入實際科目代碼（IMP/IR/ICCB）。`,
+動作包含：隨機抽取墊上、核心床或三項器械中的標準動作。
+重點：從各科目中隨機選一出題，並在 category 欄位填入實際科目代碼（IMP/IR/ICCB）。`,
 
-  PRINCIPLES: `科目範圍：五大基本原則（Essential Principles）
-專攻：1. Breathing 2. Pelvic Placement 3. Rib Cage Placement 4. Scapular Movement & Stabilisation 5. Head & Cervical Placement。
-重點：原則機制、指導語辨別、原則間交互影響。`,
+  PRINCIPLES: `科目範圍：五大基本原則 (Essential Principles)
+動作包含：所有涉及五大原則準備動作或正式動作的指導與調整。
+重點：1. Breathing 2. Pelvic Placement 3. Rib Cage Placement 4. Scapular Movement & Stabilisation 5. Head & Cervical Placement 的機制、指導語辨別與原則間交互影響。`,
 
-  ANATOMY: `科目範圍：解剖學與肌肉功能（Anatomy Focus）
-考題範疇：肌肉起止點、主動肌/拮抗肌辨識、收縮類型、運動平面、關節類型。
-重點：純粹的解剖知識，不限定特定動作或器械。`,
+  ANATOMY: `科目範圍：解剖學與肌肉功能 (Anatomy Focus)
+動作包含：不限定特定動作或器械，涵蓋全身關節運動。
+重點：肌肉起止點、主動肌/拮抗肌/協同肌辨識、收縮類型（向心/離心/等長）、運動平面、關節類型與力偶關係。`,
 };
 
 export function buildPrompt(category, excludeIds) {
@@ -37,6 +38,7 @@ export function buildPrompt(category, excludeIds) {
 【核心規範】
 1. 術語格式：動作名稱與肌肉名稱用「中文 (English)」標示；其餘句子一律純繁體中文，不翻譯。
 2. 嚴守科目範圍：僅出該科目內容，嚴禁混入其他類別。
+3. 具體提問：scenario 必須是具體的專業提問，嚴禁出現「關於專業考題...」或「這是一道題目...」等廢話。
 3. 正確答案分布：A/B/C/D 均可為正確答案，確保均勻分布。`,
 
     userMessage: `${scope}${excludeClause}
