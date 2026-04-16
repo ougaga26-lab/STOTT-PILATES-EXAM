@@ -3,7 +3,6 @@ import { useQuiz, useQuizDispatch } from '../context/QuizContext.jsx';
 import { PHASES } from '../reducers/quizReducer.js';
 import { useQuizSession } from '../hooks/useQuizSession.js';
 import { CATEGORIES } from '../constants/categories.js';
-import { generateRationale } from '../services/api.js';
 import LoadingSpinner from '../components/LoadingSpinner.jsx';
 import ErrorBanner from '../components/ErrorBanner.jsx';
 import ProgressBar from '../components/ProgressBar.jsx';
@@ -19,24 +18,13 @@ export default function Quiz() {
   const question = sessionQuestions[currentIndex];
   const isLast = currentIndex + 1 >= totalQuestions;
 
-  const [rationaleLoading, setRationaleLoading] = useState(false);
-  const [rationaleError, setRationaleError] = useState(null);
+  // Rationale is pre-loaded with the question — just toggle visibility
+  const [showRationale, setShowRationale] = useState(false);
 
-  async function handleLoadRationale() {
-    setRationaleLoading(true);
-    setRationaleError(null);
-    try {
-      const data = await generateRationale({
-        scenario: question.scenario,
-        choices: question.choices,
-        correctId: question.correctId,
-      });
-      dispatch({ type: 'RATIONALE_LOADED', payload: { index: currentIndex, rationale: data.rationale } });
-    } catch (e) {
-      setRationaleError(e.message || '解析載入失敗，請重試');
-    } finally {
-      setRationaleLoading(false);
-    }
+  // Reset rationale visibility when moving to next question
+  function handleNext() {
+    setShowRationale(false);
+    dispatch({ type: 'NEXT_QUESTION' });
   }
 
   return (
@@ -69,11 +57,13 @@ export default function Quiz() {
               <span className="pill">{question.category}</span>
             )}
 
-            {/* Scenario */}
-            <div className="card-base">
-              <p className="section-label">情境描述</p>
-              <p className="text-[14px] leading-relaxed" style={{ color: 'var(--ink-primary)' }}>{question.scenario}</p>
-            </div>
+            {/* Scenario — only show if not empty */}
+            {question.scenario && (
+              <div className="card-base">
+                <p className="section-label">情境描述</p>
+                <p className="text-[14px] leading-relaxed" style={{ color: 'var(--ink-primary)' }}>{question.scenario}</p>
+              </div>
+            )}
 
             {/* Choices + Actions */}
             <div className="rounded-card p-5 space-y-3" style={{ background: 'var(--surface-raised)', boxShadow: 'var(--shadow-raised)' }}>
@@ -93,7 +83,7 @@ export default function Quiz() {
                 {phase === PHASES.REVEALED && (
                   <button
                     className="btn w-full"
-                    onClick={() => dispatch({ type: 'NEXT_QUESTION' })}
+                    onClick={handleNext}
                   >
                     {isLast ? '查看結果' : '下一題 →'}
                   </button>
@@ -101,26 +91,20 @@ export default function Quiz() {
               </div>
             </div>
 
-            {/* Rationale — lazy loaded */}
-            {phase === PHASES.REVEALED && (
+            {/* Rationale — toggle visibility */}
+            {phase === PHASES.REVEALED && question.rationale && (
               <div>
-                {!question.rationale && !rationaleLoading && (
+                {!showRationale ? (
                   <button
                     className="btn w-full"
                     style={{ background: 'var(--surface-raised)', color: 'var(--sage-700)', boxShadow: 'var(--shadow-raised)' }}
-                    onClick={handleLoadRationale}
+                    onClick={() => setShowRationale(true)}
                   >
                     查看解析 →
                   </button>
+                ) : (
+                  <RationalePanel rationale={question.rationale} />
                 )}
-                {rationaleLoading && <LoadingSpinner message="AI 正在生成解析..." />}
-                {rationaleError && (
-                  <div className="rounded-card p-4 text-center" style={{ background: 'var(--surface-base)', boxShadow: 'var(--shadow-inner-soft)' }}>
-                    <p className="text-[12px]" style={{ color: 'var(--clay-500)' }}>{rationaleError}</p>
-                    <button className="btn mt-3" onClick={handleLoadRationale}>重試</button>
-                  </div>
-                )}
-                {question.rationale && <RationalePanel rationale={question.rationale} />}
               </div>
             )}
           </div>
