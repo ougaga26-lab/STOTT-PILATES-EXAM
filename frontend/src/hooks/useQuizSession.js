@@ -28,7 +28,7 @@ export function useQuizSession() {
           const message =
             err instanceof ApiError
               ? err.message
-              : 'AI 服務暫時無法使用，請稍後再試。';
+              : `AI 服務錯誤：${err.message || err}`;
           dispatch({ type: 'SET_ERROR', payload: message });
         }
       });

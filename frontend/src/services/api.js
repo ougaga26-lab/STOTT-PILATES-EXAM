@@ -7,13 +7,23 @@ const API_BASE = import.meta.env.VITE_WORKER_URL
  * @returns {Promise<{ question: import('../../shared/types').QuizQuestion }>}
  */
 export async function generateQuestion({ category, excludeIds = [] }) {
-  const response = await fetch(`${API_BASE}/generate`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ category, excludeIds }),
-  });
+  let response;
+  try {
+    response = await fetch(`${API_BASE}/generate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ category, excludeIds }),
+    });
+  } catch (networkErr) {
+    throw new ApiError('NETWORK_ERROR', `網路錯誤：${networkErr.message}（API: ${API_BASE}）`);
+  }
 
-  const data = await response.json();
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    throw new ApiError('PARSE_ERROR', `HTTP ${response.status}，回傳非 JSON（API: ${API_BASE}）`);
+  }
 
   if (!response.ok) {
     throw new ApiError(data?.error?.code || 'UNKNOWN', data?.error?.message || 'Unknown error');
