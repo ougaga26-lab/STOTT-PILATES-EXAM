@@ -107,7 +107,7 @@ export default function Home() {
           ))}
         </div>
 
-        <div style={{ textAlign: 'center', marginTop: 32 }}>
+        <div style={{ textAlign: 'center', marginTop: 48 }}>
           <p style={{ fontSize: 12, fontWeight: 600, color: '#555' }}>
             ｜Powered by Google Gemini AI｜非官方學習工具｜
           </p>
