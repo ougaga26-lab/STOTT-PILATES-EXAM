@@ -29,10 +29,6 @@ function CategoryCard({ cat }) {
       onMouseUp={e => { e.currentTarget.style.boxShadow = 'var(--shadow-raised-hover)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
       onClick={() => dispatch({ type: 'SELECT_CATEGORY', payload: cat.id })}
     >
-      <div className="w-9 h-9 rounded-btn flex items-center justify-center text-lg mb-3"
-        style={{ background: s.tint, boxShadow: 'var(--shadow-inner-soft)', border: `1px solid ${s.border}` }}>
-        {cat.emoji}
-      </div>
       <p style={{ fontFamily: 'Fraunces, serif', fontSize: 18, fontWeight: 500, color: 'var(--ink-primary)', lineHeight: 1.2 }}>
         {cat.label}
       </p>
@@ -55,14 +51,10 @@ export default function Home() {
       <div className="max-w-xl mx-auto">
         {/* Header */}
         <header className="mb-8">
-          <div className="w-12 h-12 rounded-modal flex items-center justify-center text-2xl mb-4"
-            style={{ background: 'var(--surface-raised)', boxShadow: 'var(--shadow-elevated)' }}>
-            🏋️
-          </div>
           <h1 style={{ fontFamily: 'Fraunces, serif', fontSize: 32, fontWeight: 500, letterSpacing: '-0.02em', color: 'var(--ink-primary)', margin: 0 }}>
             STOTT PILATES
           </h1>
-          <p style={{ fontSize: 14, color: 'var(--ink-secondary)', marginTop: 4 }}>AI 認證考試準備系統</p>
+          <p style={{ fontSize: 14, color: 'var(--ink-secondary)', marginTop: 4 }}>AI備考小工具</p>
           <div className="flex gap-2 flex-wrap mt-4">
             {['IMP', 'IR', 'ICCB', '五大原則', '解剖學'].map(tag => (
               <span key={tag} className="pill">{tag}</span>
@@ -86,9 +78,14 @@ export default function Home() {
           ))}
         </div>
 
-        <p style={{ textAlign: 'center', fontSize: 11, color: 'var(--ink-tertiary)', marginTop: 32 }}>
-          Powered by Google Gemini · 非官方學習工具
-        </p>
+        <div style={{ textAlign: 'center', marginTop: 32, color: '#c0392b' }}>
+          <p style={{ fontSize: 12, fontWeight: 600 }}>
+            ｜Powered by Google Gemini AI｜非官方學習工具｜
+          </p>
+          <p style={{ fontSize: 11, marginTop: 6, lineHeight: 1.6 }}>
+            注意!!! 所有內容均由AI生成，若有疑慮請一切以課本為準或尋求專業協助，本AI系統並不保證100%正確性*
+          </p>
+        </div>
       </div>
     </div>
   );
