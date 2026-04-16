@@ -6,6 +6,7 @@ import LoadingSpinner from '../components/LoadingSpinner.jsx';
 import ErrorBanner from '../components/ErrorBanner.jsx';
 import ProgressBar from '../components/ProgressBar.jsx';
 import ChoiceList from '../components/ChoiceList.jsx';
+import Footer from '../components/Footer.jsx';
 
 export default function Quiz() {
   useQuizSession();
@@ -94,6 +95,7 @@ export default function Quiz() {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 }

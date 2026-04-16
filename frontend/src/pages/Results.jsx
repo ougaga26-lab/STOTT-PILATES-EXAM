@@ -1,5 +1,6 @@
 import { useQuiz, useQuizDispatch } from '../context/QuizContext.jsx';
 import { CATEGORIES } from '../constants/categories.js';
+import Footer from '../components/Footer.jsx';
 
 function getGrade(pct) {
   if (pct >= 90) return { label: '優秀！', emoji: '🏆', style: { color: 'var(--clay-500)' } };
@@ -85,6 +86,7 @@ export default function Results() {
             返回選擇科目
           </button>
         </div>
+        <Footer />
       </div>
     </div>
   );
