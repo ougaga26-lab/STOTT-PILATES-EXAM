@@ -1,0 +1,9 @@
+name = "stott-exam-worker"
+main = "src/index.js"
+compatibility_date = "2024-09-01"
+
+[vars]
+MODEL_NAME = "gemini-1.5-flash"
+# GEMINI_API_KEY is a secret — set via: wrangler secret put GEMINI_API_KEY
+# ALLOWED_ORIGIN should match your Cloudflare Pages domain
+ALLOWED_ORIGIN = "https://stott-exam-prep.pages.dev"
