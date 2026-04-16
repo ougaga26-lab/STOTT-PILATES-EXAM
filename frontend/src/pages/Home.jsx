@@ -43,9 +43,11 @@ function CategoryCard({ cat }) {
         <p style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: s.accent, marginTop: 3 }}>
           {cat.subtitle}
         </p>
-        <p style={{ fontSize: 12, color: 'var(--ink-secondary)', marginTop: 8, lineHeight: 1.5 }}>
-          {cat.description}
-        </p>
+        {cat.description && (
+          <p style={{ fontSize: 12, color: 'var(--ink-secondary)', marginTop: 8, lineHeight: 1.5 }}>
+            {cat.description}
+          </p>
+        )}
         <div style={{ marginTop: 12, fontSize: 11, fontWeight: 600, color: s.accent, display: 'flex', alignItems: 'center', gap: 4 }}>
           開始練習 <span>→</span>
         </div>

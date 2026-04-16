@@ -4,14 +4,12 @@ export const CATEGORIES = [
     label: 'Matwork',
     subtitle: 'IMP — Essential & Intermediate',
     emoji: '🧘',
-    description: '呼吸、解剖學基礎、重力影響、Powerhouse 啟動',
   },
   {
     id: 'IR',
     label: 'Reformer',
     subtitle: 'IR — Essential & Intermediate',
     emoji: '⚙️',
-    description: '彈簧設定、阻力路徑、Carriage 安全操作',
     toolLink: 'https://ougaga26-lab.github.io/STOTT-PILATES-REFORMER/',
     toolLabel: 'Reformer 動作串聯小工具',
   },
@@ -20,7 +18,6 @@ export const CATEGORIES = [
     label: 'ICCB',
     subtitle: 'Cadillac · Chair · Barrels',
     emoji: '🏗️',
-    description: '安全鍊、平衡挑戰、脊椎弧度適應',
   },
   {
     id: 'MIXED',
