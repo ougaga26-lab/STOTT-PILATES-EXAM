@@ -1,5 +1,11 @@
 import Footer from '../components/Footer.jsx';
 
+function renderBold(text) {
+  return text.split('**').map((part, i) =>
+    i % 2 === 1 ? <strong key={i}>{part}</strong> : part
+  );
+}
+
 function getGrade(pct) {
   if (pct >= 90) return { label: '優秀！' };
   if (pct >= 75) return { label: '良好' };
@@ -82,7 +88,7 @@ export default function HistoryDetail({ record, onBack }) {
           <div className="rounded-card p-5" style={{ background: 'var(--surface-raised)', boxShadow: 'var(--shadow-raised)' }}>
             <p className="section-label mb-3">AI 分析</p>
             <p className="text-[13px] leading-relaxed" style={{ color: 'var(--ink-secondary)', whiteSpace: 'pre-wrap' }}>
-              {record.analysis}
+              {renderBold(record.analysis)}
             </p>
           </div>
         )}

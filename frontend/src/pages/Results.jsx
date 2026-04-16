@@ -5,6 +5,12 @@ import Footer from '../components/Footer.jsx';
 import { saveSession, updateAnalysis } from '../services/history.js';
 import { generateAnalysis } from '../services/api.js';
 
+function renderBold(text) {
+  return text.split('**').map((part, i) =>
+    i % 2 === 1 ? <strong key={i}>{part}</strong> : part
+  );
+}
+
 function getGrade(pct) {
   if (pct >= 90) return { label: '優秀！' };
   if (pct >= 75) return { label: '良好' };
@@ -146,7 +152,7 @@ export default function Results() {
             <p className="text-[13px]" style={{ color: 'var(--clay-500)' }}>分析生成失敗，請稍後再試。</p>
           )}
           {analysis && (
-            <p className="text-[13px] leading-relaxed" style={{ color: 'var(--ink-secondary)', whiteSpace: 'pre-wrap' }}>{analysis}</p>
+            <p className="text-[13px] leading-relaxed" style={{ color: 'var(--ink-secondary)', whiteSpace: 'pre-wrap' }}>{renderBold(analysis)}</p>
           )}
         </div>
 
