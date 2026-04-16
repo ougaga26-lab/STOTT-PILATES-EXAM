@@ -27,6 +27,7 @@ export function quizReducer(state, action) {
       };
 
     case 'QUESTION_LOADED':
+      if (state.sessionQuestions.length >= state.totalQuestions) return state;
       return {
         ...state,
         phase: PHASES.QUESTION,

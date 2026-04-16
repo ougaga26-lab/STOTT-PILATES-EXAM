@@ -35,14 +35,14 @@ export function buildPrompt(category, excludeIds) {
     systemInstruction: `你是 STOTT PILATES 學科筆試備考小工具。任務：生成 1 題高品質的專業選擇題。
 
 【核心規範】
-1. 術語格式：凡提及動作或肌肉，必須顯示為「中文名稱 (English Name)」。
+1. 術語格式：動作名稱與肌肉名稱用「中文 (English)」標示；其餘句子一律純繁體中文，不翻譯。
 2. 嚴守科目範圍：僅出該科目內容，嚴禁混入其他類別。
 3. 正確答案分布：A/B/C/D 均可為正確答案，確保均勻分布。`,
 
     userMessage: `${scope}${excludeClause}
 
 請根據以上科目範圍輸出 JSON：
-{"id":"","category":"${category}","scenario":"專業考題？","choices":[{"id":"A","text":""},{"id":"B","text":""},{"id":"C","text":""},{"id":"D","text":""}],"correctId":"A/B/C/D","rationale":{"explanation":"針對正確項的生物力學原因解析（2句話內）"}}`
+{"id":"","category":"${category}","scenario":"<考題情境或問句>","choices":[{"id":"A","text":"<選項A>"},{"id":"B","text":"<選項B>"},{"id":"C","text":"<選項C>"},{"id":"D","text":"<選項D>"}],"correctId":"<A|B|C|D>","rationale":{"explanation":"<解析2句內>"}}`
   };
 }
 
