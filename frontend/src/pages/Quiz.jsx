@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useQuiz, useQuizDispatch } from '../context/QuizContext.jsx';
 import { PHASES } from '../reducers/quizReducer.js';
 import { useQuizSession } from '../hooks/useQuizSession.js';
@@ -7,7 +6,6 @@ import LoadingSpinner from '../components/LoadingSpinner.jsx';
 import ErrorBanner from '../components/ErrorBanner.jsx';
 import ProgressBar from '../components/ProgressBar.jsx';
 import ChoiceList from '../components/ChoiceList.jsx';
-import RationalePanel from '../components/RationalePanel.jsx';
 
 export default function Quiz() {
   useQuizSession();
@@ -18,12 +16,7 @@ export default function Quiz() {
   const question = sessionQuestions[currentIndex];
   const isLast = currentIndex + 1 >= totalQuestions;
 
-  // Rationale is pre-loaded with the question — just toggle visibility
-  const [showRationale, setShowRationale] = useState(false);
-
-  // Reset rationale visibility when moving to next question
   function handleNext() {
-    setShowRationale(false);
     dispatch({ type: 'NEXT_QUESTION' });
   }
 
@@ -91,20 +84,11 @@ export default function Quiz() {
               </div>
             </div>
 
-            {/* Rationale — toggle visibility */}
-            {phase === PHASES.REVEALED && question.rationale && (
-              <div>
-                {!showRationale ? (
-                  <button
-                    className="btn w-full"
-                    style={{ background: 'var(--surface-raised)', color: 'var(--sage-700)', boxShadow: 'var(--shadow-raised)' }}
-                    onClick={() => setShowRationale(true)}
-                  >
-                    查看解析 →
-                  </button>
-                ) : (
-                  <RationalePanel rationale={question.rationale} />
-                )}
+            {/* Rationale — show directly after reveal */}
+            {phase === PHASES.REVEALED && question.rationale?.explanation && (
+              <div className="rounded-card p-4" style={{ background: 'var(--surface-raised)', boxShadow: 'var(--shadow-elevated)' }}>
+                <p className="section-label">解析</p>
+                <p className="text-[13px] leading-relaxed" style={{ color: 'var(--ink-secondary)' }}>{question.rationale.explanation}</p>
               </div>
             )}
           </div>
