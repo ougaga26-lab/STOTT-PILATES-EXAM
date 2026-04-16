@@ -22,6 +22,22 @@ export async function generateQuestion({ category, excludeIds = [] }) {
   return data;
 }
 
+export async function generateRationale({ scenario, choices, correctId }) {
+  const response = await fetch(`${API_BASE}/rationale`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ scenario, choices, correctId }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new ApiError(data?.error?.code || 'UNKNOWN', data?.error?.message || 'Unknown error');
+  }
+
+  return data;
+}
+
 export class ApiError extends Error {
   constructor(code, message) {
     super(message);

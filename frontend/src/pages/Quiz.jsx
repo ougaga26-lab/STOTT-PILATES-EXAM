@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { useQuiz, useQuizDispatch } from '../context/QuizContext.jsx';
 import { PHASES } from '../reducers/quizReducer.js';
 import { useQuizSession } from '../hooks/useQuizSession.js';
 import { CATEGORIES } from '../constants/categories.js';
+import { generateRationale } from '../services/api.js';
 import LoadingSpinner from '../components/LoadingSpinner.jsx';
 import ErrorBanner from '../components/ErrorBanner.jsx';
 import ProgressBar from '../components/ProgressBar.jsx';
@@ -17,6 +19,26 @@ export default function Quiz() {
   const question = sessionQuestions[currentIndex];
   const isLast = currentIndex + 1 >= totalQuestions;
 
+  const [rationaleLoading, setRationaleLoading] = useState(false);
+  const [rationaleError, setRationaleError] = useState(null);
+
+  async function handleLoadRationale() {
+    setRationaleLoading(true);
+    setRationaleError(null);
+    try {
+      const data = await generateRationale({
+        scenario: question.scenario,
+        choices: question.choices,
+        correctId: question.correctId,
+      });
+      dispatch({ type: 'RATIONALE_LOADED', payload: { index: currentIndex, rationale: data.rationale } });
+    } catch (e) {
+      setRationaleError(e.message || '解析載入失敗，請重試');
+    } finally {
+      setRationaleLoading(false);
+    }
+  }
+
   return (
     <div className="min-h-screen px-4 py-6" style={{ background: 'var(--surface-canvas)' }}>
       <div className="max-w-xl mx-auto space-y-4">
@@ -26,7 +48,7 @@ export default function Quiz() {
             ← 返回
           </button>
           <span className="pill" style={{ '--pill-dot': 'var(--sage-500)' }}>
-            {catMeta?.emoji} {catMeta?.label}
+            {catMeta?.label}
           </span>
         </div>
 
@@ -58,7 +80,7 @@ export default function Quiz() {
               <p className="section-label">請選擇最正確的答案</p>
               <ChoiceList choices={question.choices} correctId={question.correctId} />
 
-              <div className="pt-1">
+              <div className="pt-1 space-y-2">
                 {phase === PHASES.QUESTION && (
                   <button
                     className="btn w-full"
@@ -79,8 +101,28 @@ export default function Quiz() {
               </div>
             </div>
 
-            {/* Rationale */}
-            {phase === PHASES.REVEALED && <RationalePanel rationale={question.rationale} />}
+            {/* Rationale — lazy loaded */}
+            {phase === PHASES.REVEALED && (
+              <div>
+                {!question.rationale && !rationaleLoading && (
+                  <button
+                    className="btn w-full"
+                    style={{ background: 'var(--surface-raised)', color: 'var(--sage-700)', boxShadow: 'var(--shadow-raised)' }}
+                    onClick={handleLoadRationale}
+                  >
+                    查看解析 →
+                  </button>
+                )}
+                {rationaleLoading && <LoadingSpinner message="AI 正在生成解析..." />}
+                {rationaleError && (
+                  <div className="rounded-card p-4 text-center" style={{ background: 'var(--surface-base)', boxShadow: 'var(--shadow-inner-soft)' }}>
+                    <p className="text-[12px]" style={{ color: 'var(--clay-500)' }}>{rationaleError}</p>
+                    <button className="btn mt-3" onClick={handleLoadRationale}>重試</button>
+                  </div>
+                )}
+                {question.rationale && <RationalePanel rationale={question.rationale} />}
+              </div>
+            )}
           </div>
         )}
       </div>

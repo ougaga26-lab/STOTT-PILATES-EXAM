@@ -68,6 +68,12 @@ export function quizReducer(state, action) {
     case 'SET_ERROR':
       return { ...state, phase: PHASES.QUESTION, error: action.payload };
 
+    case 'RATIONALE_LOADED': {
+      const qs = [...state.sessionQuestions];
+      qs[action.payload.index] = { ...qs[action.payload.index], rationale: action.payload.rationale };
+      return { ...state, sessionQuestions: qs };
+    }
+
     case 'RETRY_LOAD':
       return { ...state, phase: PHASES.LOADING, error: null };
 
