@@ -5,8 +5,6 @@ export const CATEGORIES = [
     subtitle: 'IMP — Essential & Intermediate',
     emoji: '🧘',
     description: '呼吸、解剖學基礎、重力影響、Powerhouse 啟動',
-    color: 'bg-blue-50 border-blue-200 text-blue-800',
-    accent: 'bg-blue-500',
   },
   {
     id: 'IR',
@@ -14,8 +12,6 @@ export const CATEGORIES = [
     subtitle: 'IR — Essential & Intermediate',
     emoji: '⚙️',
     description: '彈簧設定、阻力路徑、Carriage 安全操作',
-    color: 'bg-purple-50 border-purple-200 text-purple-800',
-    accent: 'bg-purple-500',
   },
   {
     id: 'ICCB',
@@ -23,8 +19,6 @@ export const CATEGORIES = [
     subtitle: 'Cadillac · Chair · Barrels',
     emoji: '🏗️',
     description: '安全鍊、平衡挑戰、脊椎弧度適應',
-    color: 'bg-amber-50 border-amber-200 text-amber-800',
-    accent: 'bg-amber-500',
   },
   {
     id: 'MIXED',
@@ -32,8 +26,20 @@ export const CATEGORIES = [
     subtitle: 'IMP + IR + ICCB',
     emoji: '🎲',
     description: '三科隨機混合，模擬完整考試環境',
-    color: 'bg-teal-50 border-teal-200 text-teal-800',
-    accent: 'bg-stott-teal',
+  },
+  {
+    id: 'PRINCIPLES',
+    label: '五大原則',
+    subtitle: 'Essential Principles 深度專區',
+    emoji: '📗',
+    description: '呼吸、骨盆、胸廓、肩胛、頭頸 · 指導語辨別',
+  },
+  {
+    id: 'ANATOMY',
+    label: '解剖學',
+    subtitle: 'Anatomy Focus',
+    emoji: '🦴',
+    description: '起止點、主動肌/協同肌、離心控制、代償分析',
   },
 ];
 

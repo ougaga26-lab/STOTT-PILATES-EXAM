@@ -32,7 +32,7 @@ export const QuizQuestionSchema = z.object({
 });
 
 export const RequestSchema = z.object({
-  category: z.enum(['IMP', 'IR', 'ICCB', 'MIXED']),
+  category: z.enum(['IMP', 'IR', 'ICCB', 'MIXED', 'PRINCIPLES', 'ANATOMY']),
   excludeIds: z.array(z.string()).optional().default([]),
   difficulty: z.enum(['standard', 'advanced']).optional().default('standard'),
 });

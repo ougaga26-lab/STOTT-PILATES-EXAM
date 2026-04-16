@@ -8,7 +8,6 @@ export const PHASES = {
 
 export const initialState = {
   phase: PHASES.SELECT,
-  view: null,
   category: null,
   sessionQuestions: [],
   currentIndex: 0,
@@ -40,8 +39,7 @@ export function quizReducer(state, action) {
       if (state.phase !== PHASES.QUESTION) return state;
       return { ...state, selectedChoice: action.payload };
 
-    case 'REVEAL':
-      if (state.selectedChoice === null) return state;
+    case 'REVEAL': {
       const question = state.sessionQuestions[state.currentIndex];
       const isCorrect = action.payload === question.correctId;
       return {
@@ -52,6 +50,7 @@ export function quizReducer(state, action) {
           total: state.score.total + 1,
         },
       };
+    }
 
     case 'NEXT_QUESTION': {
       const nextIndex = state.currentIndex + 1;
@@ -71,9 +70,6 @@ export function quizReducer(state, action) {
 
     case 'RETRY_LOAD':
       return { ...state, phase: PHASES.LOADING, error: null };
-
-    case 'SHOW_FLASHCARDS':
-      return { ...initialState, view: 'FLASHCARDS' };
 
     case 'RESET':
       return { ...initialState };
