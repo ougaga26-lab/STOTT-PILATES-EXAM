@@ -1,5 +1,6 @@
 import { buildCorsHeaders, corsResponse } from './lib/cors.js';
 import { handleGenerateQuestion } from './handlers/generateQuestion.js';
+import { handleGenerateAnalysis } from './handlers/generateAnalysis.js';
 
 export default {
   async fetch(request, env) {
@@ -24,6 +25,11 @@ export default {
     // Route: POST /api/generate
     if (url.pathname === '/api/generate' && request.method === 'POST') {
       return handleGenerateQuestion(request, env, corsHeaders);
+    }
+
+    // Route: POST /api/analysis
+    if (url.pathname === '/api/analysis' && request.method === 'POST') {
+      return handleGenerateAnalysis(request, env, corsHeaders);
     }
 
     // Health check

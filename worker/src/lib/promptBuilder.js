@@ -45,3 +45,20 @@ export function buildPrompt(category, excludeIds) {
 {"id":"","category":"${category}","scenario":"專業考題？","choices":[{"id":"A","text":""},{"id":"B","text":""},{"id":"C","text":""},{"id":"D","text":""}],"correctId":"A/B/C/D","rationale":{"explanation":"針對正確項的生物力學原因解析（2句話內）"}}`
   };
 }
+
+export function buildAnalysisPrompt(categoryLabel, score, wrongQuestions) {
+  const wrongSummary = wrongQuestions.map((q, i) =>
+    `${i + 1}. 題目：${q.scenario}\n   正確答案：${q.correctText}\n   學員選擇：${q.selectedText}\n   解析：${q.explanation}`
+  ).join('\n\n');
+
+  return {
+    systemInstruction: `你是 STOTT PILATES 學科筆試備考顧問，請根據學員的作答結果，用繁體中文撰寫一份約 300 字的學習分析報告。報告須包含：整體表現評估、主要弱點分析、具體學習建議。語氣專業但鼓勵。`,
+    userMessage: `科目：${categoryLabel}
+成績：${score.correct} / ${score.total} 題正確
+
+答錯題目如下：
+${wrongSummary || '（全部答對）'}
+
+請輸出純 JSON：{"analysis":"報告內容"}`
+  };
+}

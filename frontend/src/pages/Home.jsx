@@ -75,16 +75,38 @@ function CategoryCard({ cat }) {
   );
 }
 
-export default function Home() {
+export default function Home({ onHistory }) {
   return (
     <div className="min-h-screen px-4 py-10" style={{ background: 'var(--surface-canvas)' }}>
       <div className="max-w-xl mx-auto">
         {/* Header */}
         <header className="mb-8">
-          <h1 style={{ fontFamily: 'Fraunces, serif', fontSize: 32, fontWeight: 500, letterSpacing: '-0.02em', color: 'var(--ink-primary)', margin: 0 }}>
-            STOTT PILATES
-          </h1>
-          <p style={{ fontSize: 14, color: 'var(--ink-secondary)', marginTop: 4 }}>AI備考小工具</p>
+          <div className="flex items-start justify-between">
+            <div>
+              <h1 style={{ fontFamily: 'Fraunces, serif', fontSize: 32, fontWeight: 500, letterSpacing: '-0.02em', color: 'var(--ink-primary)', margin: 0 }}>
+                STOTT PILATES
+              </h1>
+              <p style={{ fontSize: 14, color: 'var(--ink-secondary)', marginTop: 4 }}>AI備考小工具</p>
+            </div>
+            <button
+              onClick={onHistory}
+              style={{
+                background: 'var(--surface-raised)',
+                border: 'none',
+                borderRadius: 8,
+                padding: '6px 12px',
+                fontSize: 12,
+                color: 'var(--ink-secondary)',
+                cursor: 'pointer',
+                boxShadow: 'var(--shadow-raised)',
+                marginTop: 4,
+              }}
+              onMouseEnter={e => { e.currentTarget.style.boxShadow = 'var(--shadow-raised-hover)'; }}
+              onMouseLeave={e => { e.currentTarget.style.boxShadow = 'var(--shadow-raised)'; }}
+            >
+              練習記錄
+            </button>
+          </div>
           <div className="flex gap-2 flex-wrap mt-4">
             {['IMP', 'IR', 'ICCB', '五大原則', '解剖學'].map(tag => (
               <span key={tag} className="pill">{tag}</span>

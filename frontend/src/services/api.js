@@ -48,6 +48,17 @@ export async function generateRationale({ scenario, choices, correctId }) {
   return data;
 }
 
+export async function generateAnalysis({ categoryLabel, score, wrongQuestions }) {
+  const response = await fetch(`${API_BASE}/analysis`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ categoryLabel, score, wrongQuestions }),
+  });
+  const data = await response.json();
+  if (!response.ok) throw new ApiError(data?.error?.code || 'UNKNOWN', data?.error?.message || 'Unknown error');
+  return data;
+}
+
 export class ApiError extends Error {
   constructor(code, message) {
     super(message);

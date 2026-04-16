@@ -1,12 +1,15 @@
+import { useEffect, useRef, useState } from 'react';
 import { useQuiz, useQuizDispatch } from '../context/QuizContext.jsx';
 import { CATEGORIES } from '../constants/categories.js';
 import Footer from '../components/Footer.jsx';
+import { saveSession, updateAnalysis } from '../services/history.js';
+import { generateAnalysis } from '../services/api.js';
 
 function getGrade(pct) {
-  if (pct >= 90) return { label: '優秀！', emoji: '🏆', style: { color: 'var(--clay-500)' } };
-  if (pct >= 75) return { label: '良好',   emoji: '🎯', style: { color: 'var(--sage-700)' } };
-  if (pct >= 60) return { label: '及格',   emoji: '📚', style: { color: '#8A8FBF' } };
-  return             { label: '需加強', emoji: '💪', style: { color: 'var(--clay-700)' } };
+  if (pct >= 90) return { label: '優秀！' };
+  if (pct >= 75) return { label: '良好' };
+  if (pct >= 60) return { label: '及格' };
+  return { label: '需加強' };
 }
 
 export default function Results() {
@@ -16,12 +19,60 @@ export default function Results() {
   const grade = getGrade(pct);
   const catMeta = CATEGORIES.find(c => c.id === category);
 
+  const [analysis, setAnalysis] = useState(null);
+  const [analysisLoading, setAnalysisLoading] = useState(true);
+  const [analysisError, setAnalysisError] = useState(false);
+  const saved = useRef(false);
+  const recordId = useRef(null);
+
+  useEffect(() => {
+    if (saved.current) return;
+    saved.current = true;
+
+    const record = {
+      id: Date.now(),
+      date: new Date().toISOString(),
+      category,
+      categoryLabel: catMeta?.label || category,
+      score,
+      percentage: pct,
+      questions: sessionQuestions,
+      analysis: null,
+    };
+    recordId.current = record.id;
+    saveSession(record);
+
+    // Build wrong questions list for analysis
+    const wrongQuestions = sessionQuestions
+      .filter(q => q.selectedChoice !== q.correctId)
+      .map(q => ({
+        scenario: q.scenario,
+        correctText: q.choices.find(c => c.id === q.correctId)?.text || '',
+        selectedText: q.choices.find(c => c.id === q.selectedChoice)?.text || '',
+        explanation: q.rationale?.explanation || '',
+      }));
+
+    generateAnalysis({
+      categoryLabel: catMeta?.label || category,
+      score,
+      wrongQuestions,
+    })
+      .then(({ analysis: text }) => {
+        setAnalysis(text);
+        setAnalysisLoading(false);
+        updateAnalysis(recordId.current, text);
+      })
+      .catch(() => {
+        setAnalysisError(true);
+        setAnalysisLoading(false);
+      });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <div className="min-h-screen px-4 py-10" style={{ background: 'var(--surface-canvas)' }}>
       <div className="max-w-xl mx-auto space-y-6">
-        {/* Score hero — elevated clay card */}
+        {/* Score hero */}
         <div className="card-elevated text-center">
-          <div className="text-4xl mb-3">{grade.emoji}</div>
           <p className="text-[42px] font-medium leading-none mb-1" style={{ fontFamily: 'Fraunces, serif', color: '#FAF4EE' }}>
             {pct}%
           </p>
@@ -32,7 +83,7 @@ export default function Results() {
           {catMeta && (
             <span className="inline-flex items-center gap-1.5 mt-3 px-3 py-1 rounded-full text-[11px] font-medium"
               style={{ background: 'rgba(255,252,244,0.15)', color: '#FAF4EE' }}>
-              {catMeta.emoji} {catMeta.label}
+              {catMeta.label}
             </span>
           )}
         </div>
@@ -50,9 +101,7 @@ export default function Results() {
                 <div key={q.id} className="card-base" style={{ borderLeft: `3px solid ${borderColor}` }}>
                   <p className="text-[12px] leading-relaxed mb-2" style={{ color: 'var(--ink-primary)' }}>{q.scenario}</p>
                   {isCorrect ? (
-                    <p className="text-[12px]" style={{ color: 'var(--sage-700)' }}>
-                      ✅ {correctText}
-                    </p>
+                    <p className="text-[12px]" style={{ color: 'var(--sage-700)' }}>✅ {correctText}</p>
                   ) : (
                     <p className="text-[12px]">
                       <span style={{ color: 'var(--clay-500)' }}>❌ {selectedText}</span>
@@ -86,6 +135,21 @@ export default function Results() {
             返回選擇科目
           </button>
         </div>
+
+        {/* AI Analysis */}
+        <div className="rounded-card p-5" style={{ background: 'var(--surface-raised)', boxShadow: 'var(--shadow-raised)' }}>
+          <p className="section-label mb-3">AI 分析</p>
+          {analysisLoading && (
+            <p className="text-[13px]" style={{ color: 'var(--ink-tertiary)' }}>分析生成中，請稍候…</p>
+          )}
+          {analysisError && (
+            <p className="text-[13px]" style={{ color: 'var(--clay-500)' }}>分析生成失敗，請稍後再試。</p>
+          )}
+          {analysis && (
+            <p className="text-[13px] leading-relaxed" style={{ color: 'var(--ink-secondary)', whiteSpace: 'pre-wrap' }}>{analysis}</p>
+          )}
+        </div>
+
         <Footer />
       </div>
     </div>
