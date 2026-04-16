@@ -2,6 +2,7 @@ import { buildPrompt } from '../lib/promptBuilder.js';
 import { callGemini, GeminiError } from '../lib/gemini.js';
 import { parseQuestion, RequestSchema } from '../lib/validation.js';
 import { corsResponse } from '../lib/cors.js';
+import { normalizeTerms } from '../lib/terms.js';
 
 export async function handleGenerateQuestion(request, env, corsHeaders) {
   // Parse request body
@@ -43,6 +44,9 @@ export async function handleGenerateQuestion(request, env, corsHeaders) {
     console.error('Parse error:', err.message, '\nRaw:', rawText);
     return corsResponse(500, { error: { code: 'PARSE_ERROR', message: err.message } }, corsHeaders);
   }
+
+  // Post-process: normalize terminology to official translations
+  question = normalizeTerms(question);
 
   return corsResponse(200, { question }, corsHeaders);
 }
