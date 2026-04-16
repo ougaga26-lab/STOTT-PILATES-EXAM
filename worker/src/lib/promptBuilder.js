@@ -5,27 +5,27 @@
 const CATEGORY_SCOPE = {
 IMP: `科目範圍：Essential & Intermediate Matwork (墊上運動)
 動作包含：Roll Up、Single Leg Stretch、Spine Stretch Forward、Rolling Like a Ball、Teaser、Hundred、Shoulder Bridge 等。
-重點：動作目標、主動肌、五大原則應用、解剖學原理、重力對軀幹穩定性的影響。`,
+重點：動作目標、主動肌功能、五大原則應用、解剖學原理、重力對軀幹穩定性的影響。`,
 
   IR: `科目範圍：Essential & Intermediate Reformer (核心床)
-動作包含：Footwork、Elephant、Long Stretch、Short Box Series、Short Spine、抬腿與放腿 (Lift & Lower) 等。
-重點：彈簧設定（輕/中/重）、Carriage (滑車) 操作、齒輪桿 (Gearbar) 與頭枕位置設定、器械安全、阻力帶來的離心控制 (Eccentric Control)。`,
+動作包含：彈簧設定（輕/中/重彈簧）、Carriage (滑車) 操作、Footwork、Elephant、Long Stretch、Short Box Series、Short Spine、抬腿與放腿 (Lift & Lower) 等。
+重點：動作目標、主動肌功能、五大原則應用、解剖學原理（如離心控制）、彈簧物理力學（阻力方向）、齒輪桿 (Gearbar) 與頭枕位置設定、器械安全。`,
 
   ICCB: `科目範圍：Cadillac、Chair、Barrels (三種器械)
-動作包含：Push-thru Bar (推桿) 操作、安全鍊使用、Chair 踏板設定、Barrels 脊椎弧度應用 (如 Ladder Barrel)。
-重點：器械特性（凱迪拉克、穩定椅、弧脊桶）、安全操作規範、脊椎在不同器械上的適應性。`,
+動作包含：安全鍊操作、Push-thru Bar (推桿) 操作、Chair 踏板設定、Barrels 脊椎弧度應用 (如 Ladder Barrel)。
+重點：動作目標、主動肌功能、五大原則應用、解剖學原理（如阻力 vs 輔助物理力學）、器械特性、安全操作規範（如安全鍊預防功能）。`,
 
   MIXED: `科目範圍：IMP + IR + ICCB 混合
-動作包含：隨機抽取墊上、核心床或三項器械中的標準動作。
-重點：從各科目中隨機選一出題，並在 category 欄位填入實際科目代碼（IMP/IR/ICCB）。`,
+動作包含：隨機抽取各器械標準動作。
+重點：確保題目涵蓋動作目標、五大原則應用與解剖學原理，並在 category 欄位填入實際科目代碼（IMP/IR/ICCB）。`,
 
   PRINCIPLES: `科目範圍：五大基本原則 (Essential Principles)
-動作包含：所有涉及五大原則準備動作或正式動作的指導與調整。
-重點：1. Breathing 2. Pelvic Placement 3. Rib Cage Placement 4. Scapular Movement & Stabilisation 5. Head & Cervical Placement 的機制、指導語辨別與原則間交互影響。`,
+專攻：1. Breathing 2. Pelvic Placement 3. Rib Cage Placement 4. Scapular Movement & Stabilisation 5. Head & Cervical Placement。
+重點：各原則的解剖機制、中立位 (Neutral) vs 印記位 (Imprint) 的辨別、指導語辨別、原則間交互影響。`,
 
   ANATOMY: `科目範圍：解剖學與肌肉功能 (Anatomy Focus)
-動作包含：不限定特定動作或器械，涵蓋全身關節運動。
-重點：肌肉起止點、主動肌/拮抗肌/協同肌辨識、收縮類型（向心/離心/等長）、運動平面、關節類型與力偶關係。`,
+考題範疇：肌肉起止點、主動肌/拮抗肌/協同肌辨識、力偶關係 (Force Couples)、收縮類型（向心/離心/等長）、運動平面 (Planes)、關節類型。
+重點：純粹的解剖學知識，不限定特定動作或器械。`,
 };
 
 export function buildPrompt(category, excludeIds) {
