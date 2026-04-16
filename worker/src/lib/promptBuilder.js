@@ -37,26 +37,11 @@ export function buildPrompt(category, excludeIds) {
 【核心規範】
 1. 術語格式：凡提及動作或肌肉，必須顯示為「中文名稱 (English Name)」。
 2. 嚴守科目範圍：僅出該科目內容，嚴禁混入其他類別。
-3. 正確答案分布：A/B/C/D 均可為正確答案，確保均勻分布。
-4. 輸出穩定：僅輸出純 JSON。`,
+3. 正確答案分布：A/B/C/D 均可為正確答案，確保均勻分布。`,
 
     userMessage: `${scope}${excludeClause}
 
-請根據以上科目範圍，輸出結構完整的純 JSON：
-{
-  "id": "string",
-  "category": "${category}",
-  "scenario": "專業考題？",
-  "choices": [
-    { "id": "A", "text": "選項內容" },
-    { "id": "B", "text": "選項內容" },
-    { "id": "C", "text": "選項內容" },
-    { "id": "D", "text": "選項內容" }
-  ],
-  "correctId": "A/B/C/D",
-  "rationale": {
-    "explanation": "針對正確項的生物力學原因解析（2句話內）"
-  }
-}`
+請根據以上科目範圍輸出 JSON：
+{"id":"","category":"${category}","scenario":"專業考題？","choices":[{"id":"A","text":""},{"id":"B","text":""},{"id":"C","text":""},{"id":"D","text":""}],"correctId":"A/B/C/D","rationale":{"explanation":"針對正確項的生物力學原因解析（2句話內）"}}`
   };
 }
