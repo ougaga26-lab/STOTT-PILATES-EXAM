@@ -6,6 +6,7 @@ import Quiz from './pages/Quiz.jsx';
 import Results from './pages/Results.jsx';
 import HistoryList from './pages/HistoryList.jsx';
 import HistoryDetail from './pages/HistoryDetail.jsx';
+import PasswordGate from './pages/PasswordGate.jsx';
 
 function AppRouter({ page, setPage, historyDetail, setHistoryDetail }) {
   const { phase } = useQuiz();
@@ -35,6 +36,13 @@ function AppRouter({ page, setPage, historyDetail, setHistoryDetail }) {
 export default function App() {
   const [page, setPage] = useState('quiz');
   const [historyDetail, setHistoryDetail] = useState(null);
+  const [unlocked, setUnlocked] = useState(
+    () => sessionStorage.getItem('app_key') === 'SCTA'
+  );
+
+  if (!unlocked) {
+    return <PasswordGate onUnlock={() => setUnlocked(true)} />;
+  }
 
   return (
     <QuizProvider>

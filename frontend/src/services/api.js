@@ -2,6 +2,11 @@ const API_BASE = import.meta.env.VITE_WORKER_URL
   ? `${import.meta.env.VITE_WORKER_URL}/api`
   : '/api';
 
+function appKeyHeaders() {
+  const key = sessionStorage.getItem('app_key') || '';
+  return { 'Content-Type': 'application/json', 'X-App-Key': key };
+}
+
 /**
  * @param {{ category: string, excludeIds: string[] }} params
  * @returns {Promise<{ question: import('../../shared/types').QuizQuestion }>}
@@ -11,7 +16,7 @@ export async function generateQuestion({ category, excludeIds = [], topic = '' }
   try {
     response = await fetch(`${API_BASE}/generate`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: appKeyHeaders(),
       body: JSON.stringify({ category, excludeIds, topic }),
     });
   } catch (networkErr) {
@@ -35,7 +40,7 @@ export async function generateQuestion({ category, excludeIds = [], topic = '' }
 export async function generateRationale({ scenario, choices, correctId }) {
   const response = await fetch(`${API_BASE}/rationale`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: appKeyHeaders(),
     body: JSON.stringify({ scenario, choices, correctId }),
   });
 
@@ -51,7 +56,7 @@ export async function generateRationale({ scenario, choices, correctId }) {
 export async function generateAnalysis({ categoryLabel, score, wrongQuestions }) {
   const response = await fetch(`${API_BASE}/analysis`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: appKeyHeaders(),
     body: JSON.stringify({ categoryLabel, score, wrongQuestions }),
   });
   const data = await response.json();
