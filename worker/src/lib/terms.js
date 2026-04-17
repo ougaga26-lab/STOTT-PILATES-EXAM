@@ -234,6 +234,9 @@ export function applyTerms(text) {
   // 移除 "STOTT PILATES" 字樣（含前後書名號/引號），已是預設語境，無需重複顯示
   text = text.replace(/[「『]?\s*STOTT PILATES\s*[」』]?\s*/g, '');
 
+  // 清除空引號 「」「 」
+  text = text.replace(/「\s*」/g, '');
+
   // 修正術語格式：中文 (任意英文) → 中文 (官方英文)
   for (const [zh, en] of Object.entries(TERMS)) {
     const escaped = zh.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -260,6 +263,11 @@ export function applyTerms(text) {
       new RegExp(`(?<![a-zA-Z])${escaped}(?![a-zA-Z])`, 'g'), zh
     );
   }
+
+  // 清理中文字符間多餘空格（如「在 墊上運動 的」→「在墊上運動的」）
+  text = text.replace(/([\u4e00-\u9fff，。？！、：；「」【】]) +([\u4e00-\u9fff，。？！、：；「」【】])/g, '$1$2');
+  // 重複執行一次以處理連續多個空格
+  text = text.replace(/([\u4e00-\u9fff，。？！、：；「」【】]) +([\u4e00-\u9fff，。？！、：；「」【】])/g, '$1$2');
 
   return text;
 }
