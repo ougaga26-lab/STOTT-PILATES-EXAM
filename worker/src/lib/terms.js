@@ -228,8 +228,10 @@ const EQUIPMENT_ZH = [
 export function applyTerms(text) {
   if (!text) return text;
 
-  // 清除反引號
-  text = text.replaceAll('`', '');
+  // 清除所有 markdown 格式符號（**bold**、*italic*、`code`）
+  text = text.replace(/\*\*([^*]+)\*\*/g, '$1'); // **bold** → text
+  text = text.replace(/\*([^*]+)\*/g, '$1');      // *italic* → text
+  text = text.replaceAll('`', '');                 // `code` → text
 
   // 移除 "STOTT PILATES" 字樣（含前後書名號/引號及後接的「的」），已是預設語境，無需重複顯示
   text = text.replace(/[「『]?\s*STOTT PILATES\s*[」』]?\s*的?\s*/g, '');
