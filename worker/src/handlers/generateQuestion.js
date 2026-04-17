@@ -21,8 +21,8 @@ export async function handleGenerateQuestion(request, env, corsHeaders) {
     }, corsHeaders);
   }
 
-  const { category, excludeIds } = parsed.data;
-  const { systemInstruction, userMessage } = buildPrompt(category, excludeIds);
+  const { category, excludeIds, topic } = parsed.data;
+  const { systemInstruction, userMessage } = buildPrompt(category, excludeIds, topic);
 
   // Call Gemini
   let rawText;

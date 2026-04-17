@@ -6,13 +6,13 @@ const API_BASE = import.meta.env.VITE_WORKER_URL
  * @param {{ category: string, excludeIds: string[] }} params
  * @returns {Promise<{ question: import('../../shared/types').QuizQuestion }>}
  */
-export async function generateQuestion({ category, excludeIds = [] }) {
+export async function generateQuestion({ category, excludeIds = [], topic = '' }) {
   let response;
   try {
     response = await fetch(`${API_BASE}/generate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ category, excludeIds }),
+      body: JSON.stringify({ category, excludeIds, topic }),
     });
   } catch (networkErr) {
     throw new ApiError('NETWORK_ERROR', `網路錯誤：${networkErr.message}（API: ${API_BASE}）`);
