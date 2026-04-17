@@ -2,13 +2,15 @@ import { CATEGORIES } from '../constants/categories.js';
 import { useQuizDispatch } from '../context/QuizContext.jsx';
 import Footer from '../components/Footer.jsx';
 
+const STRIP_BG = 'var(--surface-base)';
+
 const CATEGORY_STYLES = {
-  IMP:        { accent: 'var(--sage-500)',  tint: 'var(--sage-100)',  border: 'var(--sage-300)' },
-  IR:         { accent: '#8A8FBF',          tint: '#EEEDF6',          border: '#C4C6DE' },
-  ICCB:       { accent: 'var(--clay-500)',  tint: '#FBF2EE',          border: 'var(--clay-300)' },
-  MIXED:      { accent: 'var(--sage-700)',  tint: 'var(--surface-base)', border: 'var(--stroke-soft)' },
-  PRINCIPLES: { accent: '#4A7C59',          tint: '#EAF2EB',          border: '#A8C5AD' },
-  ANATOMY:    { accent: 'var(--clay-700)',  tint: '#F5EEEA',          border: 'var(--clay-300)' },
+  IMP:        { accent: 'var(--sage-500)' },
+  IR:         { accent: '#8A8FBF' },
+  ICCB:       { accent: 'var(--clay-500)' },
+  MIXED:      { accent: 'var(--sage-700)' },
+  PRINCIPLES: { accent: '#4A7C59' },
+  ANATOMY:    { accent: 'var(--clay-700)' },
 };
 
 const ExternalLinkIcon = () => (
@@ -62,13 +64,13 @@ function CategoryCard({ cat }) {
       {/* Lower strip — tool link or empty */}
       <div
         style={{
-          background: s.tint,
-          borderRadius: '0 0 10px 10px',
-          padding: '8px 16px',
-          minHeight: 36,
+          background: STRIP_BG,
+          borderRadius: '0 0 12px 12px',
+          padding: '12px 16px 8px',
+          minHeight: 40,
           display: 'flex',
           alignItems: 'center',
-          marginTop: -4,
+          marginTop: -8,
         }}
       >
         {cat.toolLink && (
