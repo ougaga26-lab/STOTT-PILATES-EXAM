@@ -1,19 +1,40 @@
 import { useState } from 'react';
 
+const API_BASE = import.meta.env.VITE_WORKER_URL
+  ? `${import.meta.env.VITE_WORKER_URL}/api`
+  : '/api';
+
 export default function PasswordGate({ onUnlock }) {
   const [value, setValue] = useState('');
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [shake, setShake] = useState(false);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    if (value.trim().toUpperCase() === 'SCTA') {
-      sessionStorage.setItem('app_key', value.trim().toUpperCase());
-      onUnlock();
-    } else {
+    const key = value.trim();
+    if (!key) return;
+
+    setLoading(true);
+    try {
+      const res = await fetch(`${API_BASE}/auth`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-App-Key': key },
+      });
+      if (res.ok) {
+        sessionStorage.setItem('app_key', key);
+        onUnlock();
+      } else {
+        setError(true);
+        setShake(true);
+        setTimeout(() => setShake(false), 500);
+      }
+    } catch {
       setError(true);
       setShake(true);
       setTimeout(() => setShake(false), 500);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -59,6 +80,7 @@ export default function PasswordGate({ onUnlock }) {
             value={value}
             onChange={e => { setValue(e.target.value); setError(false); }}
             placeholder="請輸入密碼"
+            disabled={loading}
             style={{
               width: '100%',
               padding: '10px 14px',
@@ -79,6 +101,7 @@ export default function PasswordGate({ onUnlock }) {
           )}
           <button
             type="submit"
+            disabled={loading}
             style={{
               marginTop: 16,
               width: '100%',
@@ -89,13 +112,14 @@ export default function PasswordGate({ onUnlock }) {
               color: '#fff',
               fontSize: 14,
               fontWeight: 600,
-              cursor: 'pointer',
+              cursor: loading ? 'default' : 'pointer',
+              opacity: loading ? 0.6 : 1,
               transition: 'opacity 150ms',
             }}
-            onMouseEnter={e => { e.currentTarget.style.opacity = '0.85'; }}
-            onMouseLeave={e => { e.currentTarget.style.opacity = '1'; }}
+            onMouseEnter={e => { if (!loading) e.currentTarget.style.opacity = '0.85'; }}
+            onMouseLeave={e => { if (!loading) e.currentTarget.style.opacity = '1'; }}
           >
-            進入
+            {loading ? '驗證中…' : '進入'}
           </button>
         </form>
       </div>
