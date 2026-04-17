@@ -234,6 +234,9 @@ export function applyTerms(text) {
   // 移除 "STOTT PILATES" 字樣（含前後書名號/引號及後接的「的」），已是預設語境，無需重複顯示
   text = text.replace(/[「『]?\s*STOTT PILATES\s*[」』]?\s*的?\s*/g, '');
 
+  // 脫掉術語外層引號：「中文 (English)」→ 中文 (English)
+  text = text.replace(/「([\u4e00-\u9fff\w\s]+\s*[（(][^）)]+[）)])」/g, '$1');
+
   // 清除空引號 「」「 」
   text = text.replace(/「\s*」/g, '');
 
