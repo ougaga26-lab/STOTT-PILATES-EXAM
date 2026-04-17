@@ -192,23 +192,46 @@ export const TERMS = {
   '屈拇長肌': 'Flexor Hallucis Longus',
   '屈趾長肌': 'Flexor Digitorum Longus',
 
-  // 器械名稱
+  // 器械名稱（供 TERMS 修正「中文 (英文)」格式用）
   '床架': 'Carriage',
   '核心床': 'Reformer',
   '凱迪拉克': 'Cadillac',
-  '椅子': 'Chair',
-  '梯桶': 'Barrels',
+  '平衡椅': 'Stability Chair',
+  '梯桶': 'Ladder Barrel',
+  '弧型桶': 'Arc Barrel',
+  '脊柱矯正器': 'Spine Corrector',
   '推桿': 'Push-thru Bar',
-  '墊上': 'Matwork',
+  '墊上練習': 'Matwork',
   '斯多特皮拉提斯': 'STOTT PILATES',
 };
 
 /**
+ * 器械名稱對照：英文 → 純中文（不保留英文括號）
+ * 長名稱先替換，避免 "Ladder Barrel" 被 "Barrel" 先截斷
+ */
+const EQUIPMENT_ZH = [
+  ['Stability Chair', '平衡椅'],
+  ['Ladder Barrel', '梯桶'],
+  ['Arc Barrel', '弧型桶'],
+  ['Spine Corrector', '脊柱矯正器'],
+  ['Cadillac', '凱迪拉克'],
+  ['Reformer', '核心床'],
+  ['Matwork', '墊上練習'],
+  ['Chair', '平衡椅'],
+];
+
+/**
  * 在字串中，將「中文 (任意英文)」替換為「中文 (官方英文)」
- * 若中文出現在對照表中，強制修正括號內的英文翻譯。
+ * 並將器械英文名稱（含或不含括號）統一替換為純中文。
+ * 同時清除 Gemini 產生的 markdown 反引號。
  */
 export function applyTerms(text) {
   if (!text) return text;
+
+  // 清除反引號
+  text = text.replaceAll('`', '');
+
+  // 修正術語格式：中文 (任意英文) → 中文 (官方英文)
   for (const [zh, en] of Object.entries(TERMS)) {
     const escaped = zh.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     text = text.replaceAll(
@@ -216,6 +239,25 @@ export function applyTerms(text) {
       `${zh} (${en})`
     );
   }
+
+  // 器械名稱：English (中文) 或 中文 (English) 或單獨出現 → 純中文
+  for (const [en, zh] of EQUIPMENT_ZH) {
+    const escaped = en.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    // English (中文) → 中文
+    text = text.replaceAll(
+      new RegExp(`${escaped}\\s*[（(][^）)]*[）)]`, 'g'), zh
+    );
+    // 中文 (English) → 中文
+    text = text.replaceAll(
+      new RegExp(`[^(（]*[（(]\\s*${escaped}\\s*[）)]`, 'g'),
+      (match) => match.replace(/\s*[（(][^）)]*[）)]/, '')
+    );
+    // 單獨出現的英文 → 中文（詞界限保護）
+    text = text.replaceAll(
+      new RegExp(`(?<![a-zA-Z])${escaped}(?![a-zA-Z])`, 'g'), zh
+    );
+  }
+
   return text;
 }
 
