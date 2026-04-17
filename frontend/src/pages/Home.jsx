@@ -20,21 +20,27 @@ const ExternalLinkIcon = () => (
 function CategoryCard({ cat }) {
   const dispatch = useQuizDispatch();
   const s = CATEGORY_STYLES[cat.id];
+
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      {/* Upper card — main clickable area */}
       <button
-        className="w-full text-left rounded-card p-5"
+        className="w-full text-left p-5"
         style={{
           background: 'var(--surface-raised)',
-          boxShadow: 'var(--shadow-raised)',
+          boxShadow: '0 4px 16px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.08)',
+          borderRadius: 14,
           transition: 'all 200ms var(--ease)',
           border: 'none',
           cursor: 'pointer',
+          flex: 1,
+          position: 'relative',
+          zIndex: 1,
         }}
-        onMouseEnter={e => { e.currentTarget.style.boxShadow = 'var(--shadow-raised-hover)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-        onMouseLeave={e => { e.currentTarget.style.boxShadow = 'var(--shadow-raised)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+        onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.15), 0 2px 6px rgba(0,0,0,0.1)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+        onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.08)'; e.currentTarget.style.transform = 'translateY(0)'; }}
         onMouseDown={e => { e.currentTarget.style.boxShadow = 'var(--shadow-inner-deep)'; e.currentTarget.style.transform = 'translateY(1px)'; }}
-        onMouseUp={e => { e.currentTarget.style.boxShadow = 'var(--shadow-raised-hover)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+        onMouseUp={e => { e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.15), 0 2px 6px rgba(0,0,0,0.1)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
         onClick={() => dispatch({ type: 'SELECT_CATEGORY', payload: cat.id })}
       >
         <p style={{ fontFamily: 'Fraunces, serif', fontSize: 18, fontWeight: 500, color: 'var(--ink-primary)', lineHeight: 1.2 }}>
@@ -52,27 +58,39 @@ function CategoryCard({ cat }) {
           開始練習 <span>→</span>
         </div>
       </button>
-      {cat.toolLink && (
-        <a
-          href={cat.toolLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 5,
-            marginTop: 8,
-            marginLeft: 4,
-            fontSize: 11,
-            color: s.accent,
-            textDecoration: 'none',
-            fontWeight: 600,
-          }}
-        >
-          <ExternalLinkIcon />
-          {cat.toolLabel}
-        </a>
-      )}
+
+      {/* Lower strip — tool link or empty */}
+      <div
+        style={{
+          background: s.tint,
+          borderRadius: '0 0 10px 10px',
+          padding: '8px 16px',
+          minHeight: 36,
+          display: 'flex',
+          alignItems: 'center',
+          marginTop: -4,
+        }}
+      >
+        {cat.toolLink && (
+          <a
+            href={cat.toolLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 5,
+              fontSize: 11,
+              color: s.accent,
+              textDecoration: 'none',
+              fontWeight: 600,
+            }}
+          >
+            <ExternalLinkIcon />
+            {cat.toolLabel}
+          </a>
+        )}
+      </div>
     </div>
   );
 }
@@ -118,7 +136,7 @@ export default function Home({ onHistory }) {
 
         {/* 器械科目 */}
         <p className="section-label">器械科目</p>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mb-6">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mb-6" style={{ alignItems: 'stretch' }}>
           {CATEGORIES.filter(c => ['IMP','IR','ICCB','MIXED'].includes(c.id)).map(cat => (
             <CategoryCard key={cat.id} cat={cat} />
           ))}
@@ -126,7 +144,7 @@ export default function Home({ onHistory }) {
 
         {/* 理論專區 */}
         <p className="section-label">理論深度專區</p>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2" style={{ alignItems: 'stretch' }}>
           {CATEGORIES.filter(c => ['PRINCIPLES','ANATOMY'].includes(c.id)).map(cat => (
             <CategoryCard key={cat.id} cat={cat} />
           ))}

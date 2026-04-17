@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neo-Tactile Soft UI — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   TOKENS
+========================================================= */
+:root {
+  /* Warm neutrals */
+  --surface-canvas: #E8E2D6;
+  --surface-base: #EFEAE0;
+  --surface-raised: #F5F1E8;
+  --surface-sunken: #DDD6C7;
+  --ink-primary: #3D3A32;
+  --ink-secondary: #6B6558;
+  --ink-tertiary: #9A9385;
+  --stroke-soft: #D4CDBD;
+
+  /* Sage accent */
+  --sage-100: #E5EBD9;
+  --sage-300: #B8C89E;
+  --sage-500: #9AAE7F;
+  --sage-700: #6E8456;
+  --sage-ink: #2F3E1F;
+
+  /* Terracotta accent */
+  --clay-300: #D9A893;
+  --clay-500: #B87860;
+  --clay-700: #8A5440;
+
+  /* Shadows — the soul of the system */
+  --shadow-inner-soft: inset 2px 2px 6px rgba(120,110,90,0.18), inset -2px -2px 6px rgba(255,252,244,0.9);
+  --shadow-inner-deep: inset 3px 3px 8px rgba(120,110,90,0.28), inset -2px -2px 6px rgba(255,252,244,0.7);
+  --shadow-raised: 4px 4px 10px rgba(120,110,90,0.18), -3px -3px 8px rgba(255,252,244,0.85);
+  --shadow-raised-hover: 6px 6px 14px rgba(120,110,90,0.22), -4px -4px 10px rgba(255,252,244,0.9);
+  --shadow-elevated: 10px 12px 28px rgba(120,110,90,0.22), -5px -5px 16px rgba(255,252,244,0.75);
+  --shadow-focus: 0 0 0 3px rgba(154,174,127,0.35);
+  --shadow-clay-glow: 10px 12px 28px rgba(138,84,64,0.28), -5px -5px 16px rgba(255,252,244,0.7);
+
+  /* Motion */
+  --ease: cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* =========================================================
+   BASE
+========================================================= */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-primary);
+  background: var(--surface-canvas);
+  /* subtle paper texture via layered radial gradients */
+  background-image:
+    radial-gradient(ellipse at top left, rgba(255,252,244,0.6) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(184,120,96,0.05) 0%, transparent 50%);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.display { font-family: 'Fraunces', serif; font-weight: 500; letter-spacing: -0.01em; }
+
+/* =========================================================
+   LAYOUT
+========================================================= */
+.app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 48px 40px 80px;
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 48px;
+}
+
+@media (max-width: 1024px) {
+  .app { grid-template-columns: 1fr; padding: 32px 20px; }
+}
+
+header.page-header {
+  grid-column: 1 / -1;
+  margin-bottom: 16px;
+}
+
+.page-header h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 42px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0 0 8px;
+  color: var(--ink-primary);
+}
+
+.page-header p {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink-secondary);
+  max-width: 540px;
+}
+
+.header-meta {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--surface-base);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-secondary);
+  box-shadow: var(--shadow-inner-soft);
+}
+.pill::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--sage-500);
+}
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+.section { margin-top: 40px; }
+.section-label {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-tertiary);
+  margin: 0 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--stroke-soft), transparent);
+}
+
+.section-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 22px;
+  margin: 0 0 4px;
+  letter-spacing: -0.005em;
+}
+
+.section-caption {
+  font-size: 13px;
+  color: var(--ink-secondary);
+  margin: 0 0 20px;
+}
+
+/* =========================================================
+   CARDS — Elevation demo
+========================================================= */
+.elevation-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+@media (max-width: 720px) {
+  .elevation-grid { grid-template-columns: 1fr; }
+}
+
+.card {
+  padding: 20px;
+  border-radius: 16px;
+  position: relative;
+  transition: all 260ms var(--ease);
+}
+
+.card-base {
+  background: var(--surface-base);
+  box-shadow: var(--shadow-inner-soft);
+}
+.card-raised {
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-raised);
+}
+.card-elevated {
+  background: linear-gradient(145deg, var(--clay-500), var(--clay-700));
+  box-shadow: var(--shadow-clay-glow);
+  color: #FAF4EE;
+}
+
+.card-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-raised);
+  display: grid;
+  place-items: center;
+  margin-bottom: 14px;
+  color: var(--ink-secondary);
+}
+.card-elevated .card-icon {
+  background: rgba(255,252,244,0.15);
+  box-shadow: inset 1px 1px 4px rgba(0,0,0,0.2), 2px 2px 6px rgba(0,0,0,0.15);
+  color: #FAF4EE;
+}
+
+.card h4 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 18px;
+  margin: 0 0 8px;
+  letter-spacing: -0.005em;
+}
+.card-elevated h4 { font-size: 22px; }
+.card p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-secondary);
+}
+.card-elevated p { color: rgba(250,244,238,0.85); }
+
+.card-note {
+  position: absolute;
+  top: 20px; right: -180px;
+  width: 160px;
+  font-size: 11px;
+  color: var(--ink-tertiary);
+  font-style: italic;
+  line-height: 1.4;
+}
+.card-note::before {
+  content: '';
+  position: absolute;
+  left: -20px; top: 10px;
+  width: 16px; height: 1px;
+  background: var(--ink-tertiary);
+}
+@media (max-width: 1200px) { .card-note { display: none; } }
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+.btn-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--sage-500);
+  color: var(--sage-ink);
+  box-shadow: var(--shadow-raised);
+  cursor: pointer;
+  transition: all 200ms var(--ease);
+  position: relative;
+}
+.btn:hover {
+  background: var(--sage-300);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-raised-hover);
+}
+.btn:active,
+.btn.is-pressed {
+  background: var(--sage-700);
+  color: #FAF4EE;
+  transform: translateY(1px);
+  box-shadow: var(--shadow-inner-deep);
+}
+.btn.is-disabled {
+  background: var(--surface-sunken);
+  color: var(--ink-tertiary);
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
+  opacity: 0.7;
+}
+.btn.is-loading { pointer-events: none; }
+.btn .dot-loader {
+  display: inline-flex;
+  gap: 3px;
+}
+.btn .dot-loader span {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse 1.2s infinite ease-in-out both;
+}
+.btn .dot-loader span:nth-child(2) { animation-delay: 0.15s; }
+.btn .dot-loader span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes pulse {
+  0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+  40% { opacity: 1; transform: scale(1); }
+}
+
+.btn-caption {
+  font-size: 11px;
+  color: var(--ink-tertiary);
+  margin-top: 8px;
+  max-width: 140px;
+  line-height: 1.4;
+}
+
+.btn-col { display: flex; flex-direction: column; align-items: flex-start; }
+
+/* =========================================================
+   INPUTS
+========================================================= */
+.input-group { margin-bottom: 8px; }
+
+.label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-secondary);
+  margin-bottom: 8px;
+}
+
+.input,
+.select-trigger {
+  width: 100%;
+  padding: 11px 14px;
+  border: none;
+  border-radius: 10px;
+  background: var(--surface-base);
+  box-shadow: var(--shadow-inner-soft);
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--ink-primary);
+  outline: none;
+  transition: box-shadow 200ms var(--ease);
+}
+.input::placeholder { color: var(--ink-tertiary); }
+.input:focus,
+.select-trigger:focus {
+  box-shadow: var(--shadow-inner-soft), var(--shadow-focus);
+}
+
+/* =========================================================
+   SELECT DROPDOWN
+========================================================= */
+.select-wrap { position: relative; }
+.select-trigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  text-align: left;
+}
+.select-trigger svg { color: var(--ink-tertiary); transition: transform 200ms var(--ease); }
+.select-wrap.is-open .select-trigger svg { transform: rotate(180deg); }
+
+.select-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0; right: 0;
+  background: var(--surface-raised);
+  border-radius: 12px;
+  box-shadow: var(--shadow-elevated);
+  padding: 6px;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition: all 200ms var(--ease);
+}
+.select-wrap.is-open .select-panel {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.select-item {
+  padding: 9px 12px;
+  font-size: 13px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--ink-secondary);
+  transition: background 150ms var(--ease);
+  position: relative;
+}
+.select-item:hover { background: var(--surface-sunken); color: var(--ink-primary); }
+.select-item.is-selected {
+  background: var(--sage-100);
+  color: var(--sage-ink);
+  font-weight: 600;
+  padding-left: 16px;
+}
+.select-item.is-selected::before {
+  content: '';
+  position: absolute;
+  left: 6px; top: 50%;
+  transform: translateY(-50%);
+  width: 3px; height: 16px;
+  background: var(--sage-500);
+  border-radius: 2px;
+}
+
+/* =========================================================
+   TOGGLE
+========================================================= */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.toggle-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-secondary);
+  width: 32px;
+}
+
+.toggle {
+  position: relative;
+  width: 48px;
+  height: 26px;
+  background: var(--surface-sunken);
+  border-radius: 100px;
+  box-shadow: var(--shadow-inner-soft);
+  cursor: pointer;
+  transition: background 260ms var(--ease);
+  border: none;
+  padding: 0;
+}
+.toggle::after {
+  content: '';
+  position: absolute;
+  left: 3px; top: 3px;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--surface-raised);
+  box-shadow: 2px 2px 4px rgba(120,110,90,0.25), -1px -1px 3px rgba(255,252,244,0.9);
+  transition: all 260ms var(--ease);
+}
+.toggle.is-on {
+  background: var(--sage-500);
+  box-shadow: var(--shadow-inner-soft);
+}
+.toggle.is-on::after {
+  left: 25px;
+  background: var(--surface-raised);
+}
+
+/* =========================================================
+   SLIDER
+========================================================= */
+.slider-wrap {
+  position: relative;
+  padding: 12px 0;
+}
+.slider-track {
+  height: 8px;
+  background: var(--surface-sunken);
+  border-radius: 100px;
+  box-shadow: var(--shadow-inner-soft);
+  position: relative;
+}
+.slider-fill {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 55%;
+  background: linear-gradient(90deg, var(--sage-300), var(--sage-500));
+  border-radius: 100px;
+}
+.slider-thumb {
+  position: absolute;
+  left: 55%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, var(--clay-300), var(--clay-500));
+  box-shadow: 3px 3px 6px rgba(120,110,90,0.25), -1px -1px 3px rgba(255,252,244,0.9);
+  cursor: grab;
+  transition: transform 150ms var(--ease);
+}
+.slider-thumb:hover { transform: translate(-50%, -50%) scale(1.1); }
+
+/* =========================================================
+   STEP INDICATOR
+========================================================= */
+.steps {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.step-dot {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  transition: all 260ms var(--ease);
+}
+.step-dot.done {
+  background: var(--sage-500);
+  box-shadow: var(--shadow-raised);
+  color: #FAF4EE;
+}
+.step-dot.current {
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-raised), 0 0 0 3px var(--sage-500);
+  position: relative;
+}
+.step-dot.current::after {
+  content: '';
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--sage-500);
+}
+.step-dot.pending {
+  background: var(--surface-base);
+  box-shadow: var(--shadow-inner-soft);
+}
+.step-line {
+  flex: 1;
+  height: 3px;
+  background: var(--surface-sunken);
+  border-radius: 2px;
+  box-shadow: var(--shadow-inner-soft);
+  position: relative;
+}
+.step-line.filled::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--sage-500);
+  border-radius: 2px;
+}
+
+/* =========================================================
+   MODAL
+========================================================= */
+.modal-showcase {
+  background: var(--surface-base);
+  box-shadow: var(--shadow-inner-soft);
+  border-radius: 16px;
+  padding: 40px 20px;
+  display: grid;
+  place-items: center;
+  min-height: 260px;
+}
+
+.modal {
+  background: var(--surface-raised);
+  border-radius: 20px;
+  box-shadow: var(--shadow-elevated);
+  padding: 28px;
+  width: 100%;
+  max-width: 340px;
+  text-align: center;
+}
+.modal h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 22px;
+  margin: 0 0 10px;
+  letter-spacing: -0.005em;
+}
+.modal p {
+  font-size: 13px;
+  color: var(--ink-secondary);
+  margin: 0 0 24px;
+}
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+.btn-ghost {
+  background: var(--surface-base);
+  color: var(--ink-primary);
+  box-shadow: var(--shadow-inner-soft);
+}
+.btn-ghost:hover {
+  background: var(--surface-sunken);
+  transform: none;
+  box-shadow: var(--shadow-inner-soft);
+}
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+.empty {
+  background: var(--surface-base);
+  box-shadow: var(--shadow-inner-soft);
+  border-radius: 16px;
+  padding: 36px 20px;
+  text-align: center;
+}
+.empty-icon {
+  width: 48px; height: 48px;
+  margin: 0 auto 14px;
+  border-radius: 12px;
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-raised);
+  display: grid;
+  place-items: center;
+  color: var(--ink-tertiary);
+}
+.empty h4 {
+  font-family: 'Fraunces', serif;
+  font-size: 17px;
+  margin: 0 0 4px;
+  font-weight: 600;
+}
+.empty p {
+  font-size: 12px;
+  color: var(--ink-tertiary);
+  margin: 0;
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
+.table {
+  background: var(--surface-raised);
+  border-radius: 14px;
+  box-shadow: var(--shadow-raised);
+  overflow: hidden;
+}
+.table-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 12px 18px;
+  font-size: 13px;
+  color: var(--ink-secondary);
+  border-bottom: 1px solid var(--stroke-soft);
+  transition: all 200ms var(--ease);
+  position: relative;
+}
+.table-row:last-child { border-bottom: none; }
+.table-row.header {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-tertiary);
+  background: var(--surface-base);
+  box-shadow: var(--shadow-inner-soft);
+}
+.table-row.hover { background: var(--surface-raised); }
+.table-row.hover:hover { transform: translateY(-1px); box-shadow: var(--shadow-raised); }
+.table-row.selected {
+  background: var(--sage-100);
+  color: var(--sage-ink);
+  font-weight: 600;
+}
+.table-row.selected::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 6px; bottom: 6px;
+  width: 3px;
+  background: var(--sage-500);
+  border-radius: 0 3px 3px 0;
+}
+.table-check {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--sage-500);
+  display: inline-grid;
+  place-items: center;
+  color: #FAF4EE;
+  margin-left: auto;
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+.toast {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--surface-raised);
+  border-radius: 12px;
+  box-shadow: var(--shadow-elevated);
+  font-size: 13px;
+  font-weight: 500;
+  animation: toast-in 400ms var(--ease);
+}
+@keyframes toast-in {
+  from { transform: translateY(8px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.toast-icon {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--sage-500);
+  display: grid;
+  place-items: center;
+  color: #FAF4EE;
+  flex-shrink: 0;
+}
+.toast-close {
+  margin-left: 8px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--surface-base);
+  box-shadow: var(--shadow-inner-soft);
+  display: grid;
+  place-items: center;
+  color: var(--ink-tertiary);
+  cursor: pointer;
+  border: none;
+  flex-shrink: 0;
+}
+
+/* =========================================================
+   TWO-COL COMPONENT LAYOUT
+========================================================= */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+@media (max-width: 820px) {
+  .two-col { grid-template-columns: 1fr; gap: 24px; }
+}
+
+.component-group { margin-bottom: 28px; }
+
+/* =========================================================
+   TOKENS SIDEBAR
+========================================================= */
+.sidebar {
+  position: sticky;
+  top: 32px;
+  align-self: start;
+  background: var(--surface-raised);
+  border-radius: 20px;
+  box-shadow: var(--shadow-raised);
+  padding: 24px;
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
+}
+@media (max-width: 1024px) {
+  .sidebar { position: static; max-height: none; }
+}
+
+.sidebar-heading {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-tertiary);
+  margin: 0 0 14px;
+}
+
+.sidebar-group { margin-bottom: 28px; }
+.sidebar-group:last-child { margin-bottom: 0; }
+
+.sidebar-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-primary);
+  margin-bottom: 12px;
+}
+
+/* Radius demo */
+.radius-row {
+  display: flex;
+  gap: 14px;
+  align-items: flex-end;
+}
+.radius-chip {
+  flex: 1;
+  text-align: center;
+}
+.radius-box {
+  aspect-ratio: 1;
+  background: var(--surface-base);
+  box-shadow: var(--shadow-raised);
+  margin-bottom: 6px;
+}
+.radius-box.r4 { border-radius: 4px; }
+.radius-box.r8 { border-radius: 8px; }
+.radius-box.r12 { border-radius: 12px; }
+.radius-caption { font-size: 10px; color: var(--ink-tertiary); font-weight: 500; }
+
+/* Border thickness */
+.border-row { display: flex; flex-direction: column; gap: 10px; }
+.border-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--ink-secondary);
+}
+.border-sample {
+  flex: 1;
+  margin-right: 12px;
+  background: var(--sage-500);
+  border-radius: 1px;
+}
+.border-sample.t1 { height: 1px; }
+.border-sample.t15 { height: 1.5px; }
+.border-sample.t2 { height: 2px; }
+
+/* Shadow levels */
+.shadow-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.shadow-sample {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  background: var(--surface-base);
+  flex-shrink: 0;
+}
+.shadow-sample.s0 { }
+.shadow-sample.s1 { box-shadow: var(--shadow-inner-soft); background: var(--surface-base); }
+.shadow-sample.s2 { box-shadow: var(--shadow-raised); background: var(--surface-raised); }
+.shadow-sample.s3 { box-shadow: var(--shadow-elevated); background: var(--surface-raised); }
+
+.shadow-text {
+  font-size: 11px;
+  line-height: 1.4;
+}
+.shadow-text strong { display: block; color: var(--ink-primary); font-size: 12px; font-weight: 600; margin-bottom: 2px; }
+.shadow-text span { color: var(--ink-tertiary); }
+
+/* Icon sizes */
+.icon-row { display: flex; gap: 16px; align-items: flex-end; }
+.icon-chip { text-align: center; }
+.icon-circle {
+  border-radius: 50%;
+  background: var(--ink-primary);
+  color: var(--surface-raised);
+  display: grid;
+  place-items: center;
+  margin: 0 auto 6px;
+  box-shadow: var(--shadow-raised);
+}
+.icon-circle.i16 { width: 28px; height: 28px; }
+.icon-circle.i20 { width: 34px; height: 34px; }
+.icon-circle.i24 { width: 40px; height: 40px; }
+
+/* Spacing */
+.spacing-row { display: flex; gap: 12px; align-items: flex-end; }
+.spacing-item { text-align: center; }
+.spacing-box {
+  background: var(--sage-300);
+  border-radius: 4px;
+  margin: 0 auto 6px;
+  box-shadow: var(--shadow-inner-soft);
+}
+.spacing-box.s4 { width: 16px; height: 16px; }
+.spacing-box.s8 { width: 24px; height: 24px; }
+.spacing-box.s16 { width: 40px; height: 40px; }
+
+/* Scrollbar */
+.sidebar::-webkit-scrollbar { width: 6px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--surface-sunken); border-radius: 100px; }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- HEADER -->
+  <header class="page-header">
+    <h1 class="display">Neo-Tactile Soft UI</h1>
+    <p>High-resolution front-facing orthographic design system. Soft inner shadows, diffused highlights, and warm earthy neutrals — components you can almost press.</p>
+    <div class="header-meta">
+      <span class="pill">v1.0</span>
+      <span class="pill">Neumorphic</span>
+      <span class="pill">Warm-neutral</span>
+      <span class="pill">WCAG AA+</span>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- ELEVATION CARDS -->
+    <section class="section">
+      <div class="section-label">01 · Elevation</div>
+      <h2 class="section-title">Three cards, three depths</h2>
+      <p class="section-caption">Base is carved in. Raised sits just above. Elevated floats with a diffused outer glow — reserve it for the one thing that matters.</p>
+
+      <div class="elevation-grid">
+        <div class="card card-base">
+          <div class="card-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg>
+          </div>
+          <h4>Base Card</h4>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+        </div>
+
+        <div class="card card-raised">
+          <div class="card-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10"/><path d="M3 15l4-4 4 4 4-4 6 6"/></svg>
+          </div>
+          <h4>Raised Card</h4>
+          <p>Sits 2px above the surface. The default for most interactive surfaces.</p>
+        </div>
+
+        <div class="card card-elevated">
+          <div class="card-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          </div>
+          <h4 class="display">Elevated<br>Card</h4>
+          <p style="margin-bottom:16px;">Soft outer shadow and diffused highlight for realistic floating depth.</p>
+          <button class="btn" style="background:rgba(255,252,244,0.95);color:var(--clay-700);box-shadow:3px 3px 8px rgba(0,0,0,0.2), -1px -1px 4px rgba(255,252,244,0.3);">Call to action</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- BUTTONS -->
+    <section class="section">
+      <div class="section-label">02 · Buttons</div>
+      <h2 class="section-title">Every state lives in the shadow</h2>
+      <p class="section-caption">Hover lifts, pressed sinks, disabled goes flat. Colour changes are secondary.</p>
+
+      <div class="btn-row">
+        <div class="btn-col">
+          <button class="btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Default
+          </button>
+          <div class="btn-caption">Resting state with raised shadow.</div>
+        </div>
+        <div class="btn-col">
+          <button class="btn" style="background:var(--sage-300);transform:translateY(-1px);box-shadow:var(--shadow-raised-hover);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Hover
+          </button>
+          <div class="btn-caption">Hover subtly lifts component and increases glow.</div>
+        </div>
+        <div class="btn-col">
+          <button class="btn is-pressed">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Pressed
+          </button>
+          <div class="btn-caption">Pressed state uses inner shadow for tactile feel.</div>
+        </div>
+        <div class="btn-col">
+          <button class="btn is-disabled" disabled>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Disabled
+          </button>
+          <div class="btn-caption">Reduces contrast and removes all shadow effects.</div>
+        </div>
+        <div class="btn-col">
+          <button class="btn is-loading">
+            <span class="dot-loader"><span></span><span></span><span></span></span>
+            Loading
+          </button>
+          <div class="btn-caption">Spinner replaces icon, interactions blocked.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORMS / CONTROLS — TWO COL -->
+    <section class="section">
+      <div class="section-label">03 · Forms & Controls</div>
+      <h2 class="section-title">Inputs carved into the page</h2>
+      <p class="section-caption">Text fields are inset by default; focus adds a warm sage glow for unambiguous active state.</p>
+
+      <div class="two-col">
+        <div>
+          <div class="component-group">
+            <label class="label">Inputs</label>
+            <input class="input" type="text" placeholder="Name input" value="">
+          </div>
+
+          <div class="component-group">
+            <label class="label">Select Dropdown</label>
+            <div class="select-wrap is-open" id="selectWrap">
+              <button class="select-trigger" onclick="document.getElementById('selectWrap').classList.toggle('is-open')">
+                <span id="selectValue">Select 2</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="select-panel">
+                <div class="select-item" onclick="pickItem(this,'Item 1')">Item 1</div>
+                <div class="select-item is-selected" onclick="pickItem(this,'Select 2')">Select 2</div>
+                <div class="select-item" onclick="pickItem(this,'Item 3')">Item 3</div>
+                <div class="select-item" onclick="pickItem(this,'Item 4')">Item 4</div>
+                <div class="select-item" onclick="pickItem(this,'Item 5')">Item 5</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="component-group">
+            <label class="label">Toggle Switch</label>
+            <div class="toggle-row">
+              <span class="toggle-label">On</span>
+              <button class="toggle is-on" onclick="this.classList.toggle('is-on')" aria-pressed="true"></button>
+            </div>
+            <div class="toggle-row">
+              <span class="toggle-label">Off</span>
+              <button class="toggle" onclick="this.classList.toggle('is-on')" aria-pressed="false"></button>
+            </div>
+          </div>
+
+          <div class="component-group">
+            <label class="label">Slider</label>
+            <div class="slider-wrap">
+              <div class="slider-track">
+                <div class="slider-fill"></div>
+                <div class="slider-thumb"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="component-group">
+            <label class="label">Step Indicator</label>
+            <div class="steps">
+              <div class="step-dot done">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="step-line filled"></div>
+              <div class="step-dot current"></div>
+              <div class="step-line"></div>
+              <div class="step-dot pending"></div>
+              <div class="step-line"></div>
+              <div class="step-dot pending"></div>
+            </div>
+          </div>
+
+          <div class="component-group">
+            <label class="label">Toast Message</label>
+            <div class="toast">
+              <span class="toast-icon">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              Changes saved successfully.
+              <button class="toast-close" aria-label="Close">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="component-group">
+            <label class="label">Modal Dialog</label>
+            <div class="modal-showcase">
+              <div class="modal">
+                <h3>Modal Dialog</h3>
+                <p>Elevated surface with diffused outer shadow. Use sparingly — one modal at a time.</p>
+                <div class="modal-actions">
+                  <button class="btn">Primary</button>
+                  <button class="btn btn-ghost">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="component-group">
+            <label class="label">Empty State Tile</label>
+            <div class="empty">
+              <div class="empty-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+              </div>
+              <h4>No items found</h4>
+              <p>Try adjusting your search.</p>
+            </div>
+          </div>
+
+          <div class="component-group">
+            <label class="label">Table Row</label>
+            <div class="table">
+              <div class="table-row header">
+                <div>Default</div><div>Divider</div><div>Selected</div>
+              </div>
+              <div class="table-row hover">
+                <div>Hover</div><div>Slight lift</div><div></div>
+              </div>
+              <div class="table-row selected">
+                <div>Selected</div><div>Sage accent</div>
+                <div style="display:flex;justify-content:flex-end;">
+                  <span class="table-check">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- TOKENS SIDEBAR -->
+  <aside class="sidebar">
+    <h3 class="sidebar-heading">Tokens</h3>
+
+    <div class="sidebar-group">
+      <div class="sidebar-label">Radius Steps</div>
+      <div class="radius-row">
+        <div class="radius-chip"><div class="radius-box r4"></div><div class="radius-caption">4px</div></div>
+        <div class="radius-chip"><div class="radius-box r8"></div><div class="radius-caption">8px</div></div>
+        <div class="radius-chip"><div class="radius-box r12"></div><div class="radius-caption">12px</div></div>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-label">Border Thickness</div>
+      <div class="border-row">
+        <div class="border-item"><div class="border-sample t1"></div><span>1px</span></div>
+        <div class="border-item"><div class="border-sample t15"></div><span>1.5px</span></div>
+        <div class="border-item"><div class="border-sample t2"></div><span>2px</span></div>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-label">Shadow Levels</div>
+      <div class="shadow-row">
+        <div class="shadow-sample s0"></div>
+        <div class="shadow-text"><strong>No Shadow</strong><span>Flat surface, no depth</span></div>
+      </div>
+      <div class="shadow-row">
+        <div class="shadow-sample s1"></div>
+        <div class="shadow-text"><strong>Soft Inner</strong><span>Inset, inputs &amp; base</span></div>
+      </div>
+      <div class="shadow-row">
+        <div class="shadow-sample s2"></div>
+        <div class="shadow-text"><strong>Gentle Lift</strong><span>Raised, default cards</span></div>
+      </div>
+      <div class="shadow-row">
+        <div class="shadow-sample s3"></div>
+        <div class="shadow-text"><strong>Elevated Float</strong><span>Soft diffused outer glow</span></div>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-label">Icon Sizes</div>
+      <div class="icon-row">
+        <div class="icon-chip">
+          <div class="icon-circle i16">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="radius-caption">16px</div>
+        </div>
+        <div class="icon-chip">
+          <div class="icon-circle i20">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="radius-caption">20px</div>
+        </div>
+        <div class="icon-chip">
+          <div class="icon-circle i24">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="radius-caption">24px</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-label">Spacing Scale</div>
+      <div class="spacing-row">
+        <div class="spacing-item"><div class="spacing-box s4"></div><div class="radius-caption">4px</div></div>
+        <div class="spacing-item"><div class="spacing-box s8"></div><div class="radius-caption">8px</div></div>
+        <div class="spacing-item"><div class="spacing-box s16"></div><div class="radius-caption">16px</div></div>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-label">Color Accents</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <div style="width:32px;height:32px;border-radius:8px;background:var(--sage-500);box-shadow:var(--shadow-raised);" title="Sage 500"></div>
+        <div style="width:32px;height:32px;border-radius:8px;background:var(--sage-300);box-shadow:var(--shadow-raised);" title="Sage 300"></div>
+        <div style="width:32px;height:32px;border-radius:8px;background:var(--clay-500);box-shadow:var(--shadow-raised);" title="Clay 500"></div>
+        <div style="width:32px;height:32px;border-radius:8px;background:var(--clay-300);box-shadow:var(--shadow-raised);" title="Clay 300"></div>
+        <div style="width:32px;height:32px;border-radius:8px;background:var(--surface-sunken);box-shadow:var(--shadow-raised);" title="Surface Sunken"></div>
+        <div style="width:32px;height:32px;border-radius:8px;background:var(--ink-primary);box-shadow:var(--shadow-raised);" title="Ink Primary"></div>
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+<script>
+  function pickItem(el, value) {
+    document.querySelectorAll('.select-item').forEach(i => i.classList.remove('is-selected'));
+    el.classList.add('is-selected');
+    document.getElementById('selectValue').textContent = value;
+    setTimeout(() => document.getElementById('selectWrap').classList.remove('is-open'), 150);
+  }
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    const wrap = document.getElementById('selectWrap');
+    if (wrap && !wrap.contains(e.target)) wrap.classList.remove('is-open');
+  });
+</script>
+
+</body>
+</html>
