@@ -264,6 +264,9 @@ export function applyTerms(text) {
     );
   }
 
+  // 翻轉 "English (中文)" → "中文 (English)"（器械名已處理完，這裡處理動作/其他術語）
+  text = text.replace(/([A-Z][a-zA-Z\s\-&]+?)\s*[（(]([\u4e00-\u9fff／\-]+)[）)]/g, '$2 ($1)');
+
   // 清理中文字符間多餘空格（如「在 墊上運動 的」→「在墊上運動的」）
   text = text.replace(/([\u4e00-\u9fff，。？！、：；「」【】]) +([\u4e00-\u9fff，。？！、：；「」【】])/g, '$1$2');
   // 重複執行一次以處理連續多個空格
