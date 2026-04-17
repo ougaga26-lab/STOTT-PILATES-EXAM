@@ -231,8 +231,8 @@ export function applyTerms(text) {
   // 清除反引號
   text = text.replaceAll('`', '');
 
-  // 移除 "STOTT PILATES" 字樣（已是預設語境，無需重複顯示）
-  text = text.replace(/STOTT PILATES\s*/g, '');
+  // 移除 "STOTT PILATES" 字樣（含前後書名號/引號），已是預設語境，無需重複顯示
+  text = text.replace(/[「『]?\s*STOTT PILATES\s*[」』]?\s*/g, '');
 
   // 修正術語格式：中文 (任意英文) → 中文 (官方英文)
   for (const [zh, en] of Object.entries(TERMS)) {
