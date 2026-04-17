@@ -2,13 +2,13 @@ export const CATEGORIES = [
   {
     id: 'IMP',
     label: 'Matwork',
-    subtitle: 'IMP — Essential & Intermediate',
+    subtitle: 'IMP 墊上運動',
     emoji: '🧘',
   },
   {
     id: 'IR',
     label: 'Reformer',
-    subtitle: 'IR — Essential & Intermediate',
+    subtitle: 'IR 核心床',
     emoji: '⚙️',
     toolLink: 'https://ougaga26-lab.github.io/STOTT-PILATES-REFORMER/',
     toolLabel: 'Reformer 動作串聯小工具',
@@ -16,7 +16,7 @@ export const CATEGORIES = [
   {
     id: 'ICCB',
     label: 'ICCB',
-    subtitle: 'Cadillac · Chair · Barrels',
+    subtitle: 'ICCB 全器械',
     emoji: '🏗️',
   },
   {
@@ -29,16 +29,16 @@ export const CATEGORIES = [
   {
     id: 'PRINCIPLES',
     label: '五大原則',
-    subtitle: 'Essential Principles 深度專區',
+    subtitle: 'Essential Principles',
     emoji: '📗',
-    description: '呼吸、骨盆、胸廓、肩胛、頭頸 · 指導語辨別',
+    description: 'STOTT 理論之基石',
   },
   {
     id: 'ANATOMY',
     label: '解剖學',
     subtitle: 'Anatomy Focus',
     emoji: '🦴',
-    description: '起止點、主動肌/協同肌、離心控制、代償分析',
+    description: '針對解剖學的考題',
     toolLink: 'https://ougaga26-lab.github.io/Musculature-Heaven/',
     toolLabel: '解剖學字卡小工具',
   },
