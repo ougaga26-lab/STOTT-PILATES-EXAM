@@ -173,9 +173,11 @@ export function useQuizSession() {
 
     const excludeIds = sessionQuestions.map(q => q.id);
     const nextTopic = getTopic(category, nextIndex);
+    const nextNextTopic = getTopic(category, nextIndex + 1);
     const usedContexts = sessionQuestions
       .map(extractContext).filter(Boolean).slice(-8);
     prefetchNext(category, excludeIds, nextTopic, usedContexts);
+    prefetchNext(category, excludeIds, nextNextTopic, usedContexts);
   }, [phase]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -196,12 +198,16 @@ export function useQuizSession() {
     const key = cacheKey(category, excludeIds, topic, usedContexts);
     const cached = questionCache.get(key);
 
+    const nextNextTopic = getTopic(category, topicIndex + 2);
+
     // Cache hit (fully loaded, not in-flight)
     if (cached) {
       questionCache.delete(key);
       dispatch({ type: 'QUESTION_LOADED', payload: cached });
       const nextContexts = [...usedContexts, extractContext(cached)].filter(Boolean).slice(-8);
       prefetchNext(category, [...excludeIds, cached.id], nextTopic, nextContexts);
+      // Also prefetch N+2 in parallel
+      prefetchNext(category, [...excludeIds, cached.id], nextNextTopic, nextContexts);
       return;
     }
 
@@ -212,6 +218,8 @@ export function useQuizSession() {
           dispatch({ type: 'QUESTION_LOADED', payload: question });
           const nextContexts = [...usedContexts, extractContext(question)].filter(Boolean).slice(-8);
           prefetchNext(category, [...excludeIds, question.id], nextTopic, nextContexts);
+          // Also prefetch N+2 in parallel
+          prefetchNext(category, [...excludeIds, question.id], nextNextTopic, nextContexts);
         }
       })
       .catch(err => {
