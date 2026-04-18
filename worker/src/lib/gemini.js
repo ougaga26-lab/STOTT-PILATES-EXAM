@@ -5,19 +5,23 @@
 export async function callGemini(modelName, apiKey, systemInstruction, userMessage) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
 
-  // Combine system instruction into the user message for maximum compatibility
-  const fullPrompt = `${systemInstruction}\n\n---\n\n${userMessage}`;
-
   const payload = {
+    system_instruction: {
+      parts: [{ text: systemInstruction }],
+    },
     contents: [
       {
-        parts: [{ text: fullPrompt }],
+        role: 'user',
+        parts: [{ text: userMessage }],
       },
     ],
     generationConfig: {
       temperature: 0.7,
-      maxOutputTokens: 5000,
+      maxOutputTokens: 1000,
       responseMimeType: 'application/json',
+      thinkingConfig: {
+        thinkingBudget: 0,
+      },
     },
   };
 
