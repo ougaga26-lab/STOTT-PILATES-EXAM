@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useQuiz, useQuizDispatch } from '../context/QuizContext.jsx';
 import { CATEGORIES } from '../constants/categories.js';
 import Footer from '../components/Footer.jsx';
+import LoadingSpinner from '../components/LoadingSpinner.jsx';
 import { saveSession, updateAnalysis } from '../services/history.js';
 import { generateAnalysis } from '../services/api.js';
 
@@ -18,7 +19,7 @@ function getGrade(pct) {
   return { label: '需加強' };
 }
 
-export default function Results() {
+export default function Results({ onHistory }) {
   const { score, category, sessionQuestions } = useQuiz();
   const dispatch = useQuizDispatch();
   const pct = score.total > 0 ? Math.round((score.correct / score.total) * 100) : 0;
@@ -126,6 +127,18 @@ export default function Results() {
           </div>
         </div>
 
+        {/* AI Analysis */}
+        <div className="rounded-card p-5" style={{ background: 'var(--surface-raised)', boxShadow: 'var(--shadow-raised)' }}>
+          <p className="section-label mb-3">AI 分析</p>
+          {analysisLoading && <LoadingSpinner />}
+          {analysisError && (
+            <p className="text-[13px]" style={{ color: 'var(--clay-500)' }}>分析生成失敗，請稍後再試。</p>
+          )}
+          {analysis && (
+            <p className="text-[13px] leading-relaxed" style={{ color: 'var(--ink-secondary)', whiteSpace: 'pre-wrap' }}>{renderBold(analysis)}</p>
+          )}
+        </div>
+
         {/* Actions */}
         <div className="space-y-3">
           <button className="btn w-full" onClick={() => dispatch({ type: 'SELECT_CATEGORY', payload: category })}>
@@ -140,20 +153,15 @@ export default function Results() {
           >
             返回選擇科目
           </button>
-        </div>
-
-        {/* AI Analysis */}
-        <div className="rounded-card p-5" style={{ background: 'var(--surface-raised)', boxShadow: 'var(--shadow-raised)' }}>
-          <p className="section-label mb-3">AI 分析</p>
-          {analysisLoading && (
-            <p className="text-[13px]" style={{ color: 'var(--ink-tertiary)' }}>分析生成中，請稍候…</p>
-          )}
-          {analysisError && (
-            <p className="text-[13px]" style={{ color: 'var(--clay-500)' }}>分析生成失敗，請稍後再試。</p>
-          )}
-          {analysis && (
-            <p className="text-[13px] leading-relaxed" style={{ color: 'var(--ink-secondary)', whiteSpace: 'pre-wrap' }}>{renderBold(analysis)}</p>
-          )}
+          <button
+            className="btn w-full"
+            style={{ background: 'var(--surface-base)', color: 'var(--ink-secondary)', boxShadow: 'var(--shadow-inner-soft)' }}
+            onMouseEnter={e => { e.currentTarget.style.boxShadow = 'var(--shadow-raised)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+            onMouseLeave={e => { e.currentTarget.style.boxShadow = 'var(--shadow-inner-soft)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+            onClick={onHistory}
+          >
+            練習記錄
+          </button>
         </div>
 
         <Footer />

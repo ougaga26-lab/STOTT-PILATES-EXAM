@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { QuizProvider, useQuiz } from './context/QuizContext.jsx';
+import { QuizProvider, useQuiz, useQuizDispatch } from './context/QuizContext.jsx';
 import { PHASES } from './reducers/quizReducer.js';
 import Home from './pages/Home.jsx';
 import Quiz from './pages/Quiz.jsx';
@@ -10,6 +10,7 @@ import PasswordGate from './pages/PasswordGate.jsx';
 
 function AppRouter({ page, setPage, historyDetail, setHistoryDetail }) {
   const { phase } = useQuiz();
+  const dispatch = useQuizDispatch();
 
   if (page === 'history-list') {
     return (
@@ -29,7 +30,7 @@ function AppRouter({ page, setPage, historyDetail, setHistoryDetail }) {
   }
 
   if (phase === PHASES.SELECT) return <Home onHistory={() => setPage('history-list')} />;
-  if (phase === PHASES.COMPLETE) return <Results />;
+  if (phase === PHASES.COMPLETE) return <Results onHistory={() => { dispatch({ type: 'RESET' }); setPage('history-list'); }} />;
   return <Quiz />;
 }
 
