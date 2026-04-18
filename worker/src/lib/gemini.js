@@ -17,7 +17,7 @@ export async function callGemini(modelName, apiKey, systemInstruction, userMessa
     ],
     generationConfig: {
       temperature: 0.7,
-      maxOutputTokens: 1000,
+      maxOutputTokens: 2000,
       responseMimeType: 'application/json',
     },
   };
@@ -35,7 +35,10 @@ export async function callGemini(modelName, apiKey, systemInstruction, userMessa
   }
 
   const data = await response.json();
-  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  // When thinking mode is active, parts[0] is thinking content (thought: true)
+  // and the actual response is in a later part. Find the non-thinking part.
+  const parts = data?.candidates?.[0]?.content?.parts || [];
+  const text = parts.find(p => !p.thought)?.text;
   if (!text) {
     console.error('Empty Gemini response:', JSON.stringify(data));
     throw new GeminiError(500, 'Empty response from Gemini');
