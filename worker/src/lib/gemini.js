@@ -19,9 +19,6 @@ export async function callGemini(modelName, apiKey, systemInstruction, userMessa
       temperature: 0.7,
       maxOutputTokens: 1000,
       responseMimeType: 'application/json',
-      thinkingConfig: {
-        thinkingBudget: 0,
-      },
     },
   };
 
