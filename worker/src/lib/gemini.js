@@ -2,7 +2,7 @@
  * Calls the Gemini REST API directly using the Web Fetch API.
  * Compatible with Cloudflare Workers runtime.
  */
-export async function callGemini(modelName, apiKey, systemInstruction, userMessage, maxOutputTokens = 2000) {
+export async function callGemini(modelName, apiKey, systemInstruction, userMessage, maxOutputTokens = 5000) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
 
   const payload = {

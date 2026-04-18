@@ -29,7 +29,7 @@ export async function handleGenerateAnalysis(request, env, corsHeaders) {
 
   let rawText;
   try {
-    rawText = await callGemini(env.MODEL_NAME, env.GEMINI_API_KEY, systemInstruction, userMessage, 8000);
+    rawText = await callGemini(env.MODEL_NAME, env.GEMINI_API_KEY, systemInstruction, userMessage);
   } catch (err) {
     if (err instanceof GeminiError) return corsResponse(502, { error: { code: 'GEMINI_ERROR', message: err.message } }, corsHeaders);
     return corsResponse(502, { error: { code: 'UPSTREAM_ERROR', message: 'Failed to reach AI service.' } }, corsHeaders);
