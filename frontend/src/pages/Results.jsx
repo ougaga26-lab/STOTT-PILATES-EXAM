@@ -130,7 +130,7 @@ export default function Results({ onHistory }) {
         {/* AI Analysis */}
         <div className="rounded-card p-5" style={{ background: 'var(--surface-raised)', boxShadow: 'var(--shadow-raised)' }}>
           <p className="section-label mb-3">AI 分析</p>
-          {analysisLoading && <LoadingSpinner />}
+          {analysisLoading && <LoadingSpinner message="AI 正在分析中..." />}
           {analysisError && (
             <p className="text-[13px]" style={{ color: 'var(--clay-500)' }}>分析生成失敗，請稍後再試。</p>
           )}
