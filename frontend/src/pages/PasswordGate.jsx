@@ -87,7 +87,7 @@ export default function PasswordGate({ onUnlock }) {
               borderRadius: 8,
               border: `1.5px solid ${error ? 'var(--clay-500)' : 'var(--stroke-soft)'}`,
               background: 'var(--surface-base)',
-              fontSize: 14,
+              fontSize: 16, /* ≥16px prevents iOS Safari auto-zoom on focus */
               color: 'var(--ink-primary)',
               outline: 'none',
               boxSizing: 'border-box',
