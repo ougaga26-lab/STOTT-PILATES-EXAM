@@ -14,7 +14,7 @@ export const initialState = {
   selectedChoice: null,
   score: { correct: 0, total: 0 },
   error: null,
-  totalQuestions: 10,
+  totalQuestions: 20,
 };
 
 export function quizReducer(state, action) {
