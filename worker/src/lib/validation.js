@@ -34,6 +34,7 @@ export const RequestSchema = z.object({
   category: z.enum(['IMP', 'IR', 'ICCB', 'MIXED', 'PRINCIPLES', 'ANATOMY']),
   excludeIds: z.array(z.string()).optional().default([]),
   topic: z.string().optional().default(''),
+  usedContexts: z.array(z.string()).optional().default([]),
 });
 
 /** Generate a random 6-char hex ID */

@@ -11,13 +11,13 @@ function appKeyHeaders() {
  * @param {{ category: string, excludeIds: string[] }} params
  * @returns {Promise<{ question: import('../../shared/types').QuizQuestion }>}
  */
-export async function generateQuestion({ category, excludeIds = [], topic = '' }) {
+export async function generateQuestion({ category, excludeIds = [], topic = '', usedContexts = [] }) {
   let response;
   try {
     response = await fetch(`${API_BASE}/generate`, {
       method: 'POST',
       headers: appKeyHeaders(),
-      body: JSON.stringify({ category, excludeIds, topic }),
+      body: JSON.stringify({ category, excludeIds, topic, usedContexts }),
     });
   } catch (networkErr) {
     throw new ApiError('NETWORK_ERROR', `網路錯誤：${networkErr.message}（API: ${API_BASE}）`);

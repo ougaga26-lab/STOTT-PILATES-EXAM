@@ -32,20 +32,23 @@ const CATEGORY_EXAM = {
   ANATOMY:    '解剖學與肌肉功能 (Anatomy)',
 };
 
-export function buildPrompt(category, excludeIds, topic) {
+export function buildPrompt(category, excludeIds, topic, usedContexts) {
   const excludeClause = excludeIds?.length > 0 ? `\n排除重複 ID：${excludeIds.join(', ')}` : '';
   const examName = CATEGORY_EXAM[category] || CATEGORY_EXAM.MIXED;
   const mixedNote = category === 'MIXED'
     ? '從 IMP / IR / ICCB 三科中隨機選一出題，category 欄位填入實際代碼（IMP/IR/ICCB）。'
     : '';
   const topicNote = topic ? `\n本題主題：${topic}` : '';
+  const contextNote = usedContexts?.length > 0
+    ? `\n已涵蓋情境（請勿重複）：${usedContexts.join('、')}`
+    : '';
 
   return {
     systemInstruction: getSystemInstruction(category),
-    userMessage: `我近期要考 ${examName} 認證筆試，請協助我出 1 道筆試練習題，考驗我的理論知識。${mixedNote}${topicNote}${excludeClause}
+    userMessage: `我近期要考 ${examName} 認證筆試，請協助我出 1 道筆試練習題，考驗我的理論知識。${mixedNote}${topicNote}${contextNote}${excludeClause}
 
 輸出 JSON：
-{"id":"","category":"${category}","scenario":"<考題>","choices":[{"id":"A","text":"<選項A>"},{"id":"B","text":"<選項B>"},{"id":"C","text":"<選項C>"},{"id":"D","text":"<選項D>"}],"correctId":"<A|B|C|D>","rationale":{"explanation":"<解析2句內>"}}`
+{"id":"","category":"${category}","scenario":"<考題>","choices":[{"id":"A","text":"<選項A>"},{"id":"B","text":"<選項B>"},{"id":"C","text":"<選項C>"},{"id":"D","text":"<選項D>"}],"correctId":"<A|B|C|D>","rationale":{"explanation":"<解析>"}}`
   };
 }
 

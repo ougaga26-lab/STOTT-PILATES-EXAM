@@ -120,22 +120,40 @@ const TOPIC_SEQUENCES = {
 };
 
 function getTopic(category, index) {
-  const seq = TOPIC_SEQUENCES[category] || MOVEMENT_TOPICS;
+  const seq = TOPIC_SEQUENCES[category] || IMP_TOPICS;
   return seq[index % seq.length] || '';
+}
+
+/**
+ * 從題目的 scenario 提取 2~6 字的情境關鍵詞
+ * 例：「一位客戶呈現骨盆前傾體態」→「骨盆前傾」
+ */
+function extractContext(question) {
+  if (!question?.scenario) return null;
+  const s = question.scenario;
+  // 優先抓括號前的中文體態名稱或動作名稱（4~10字）
+  const match =
+    s.match(/呈現([^，。？\s]{2,8})(?:體態|姿勢|的體態|狀態)/) ||
+    s.match(/執行[「『]?([^」』，。？\s]{2,10})[」』]?/) ||
+    s.match(/進行[「『]?([^」』，。？\s]{2,10})[」』]?/) ||
+    s.match(/([^，。？！\s]{2,8})(?:縮短|被拉長|緊繃|無力)/);
+  if (match) return match[1];
+  // fallback：取 scenario 前 8 字
+  return s.replace(/[，。？！\s]/g, '').slice(0, 8);
 }
 
 // Module-level cache: cacheKey → question object
 const questionCache = new Map();
 
-function cacheKey(category, excludeIds, topic) {
-  return `${category}|${excludeIds.join(',')}|${topic}`;
+function cacheKey(category, excludeIds, topic, usedContexts) {
+  return `${category}|${excludeIds.join(',')}|${topic}|${usedContexts.join(',')}`;
 }
 
-function prefetchNext(category, excludeIds, topic) {
-  const key = cacheKey(category, excludeIds, topic);
+function prefetchNext(category, excludeIds, topic, usedContexts) {
+  const key = cacheKey(category, excludeIds, topic, usedContexts);
   if (questionCache.has(key)) return;
   questionCache.set(key, null);
-  generateQuestion({ category, excludeIds, topic })
+  generateQuestion({ category, excludeIds, topic, usedContexts })
     .then(({ question }) => { questionCache.set(key, question); })
     .catch(() => { questionCache.delete(key); });
 }
@@ -153,23 +171,32 @@ export function useQuizSession() {
     const topicIndex = sessionQuestions.length;
     const topic = getTopic(category, topicIndex);
     const nextTopic = getTopic(category, topicIndex + 1);
-    const key = cacheKey(category, excludeIds, topic);
+
+    // 收集已出過的情境關鍵詞（最多保留最近 8 筆，避免 prompt 過長）
+    const usedContexts = sessionQuestions
+      .map(extractContext)
+      .filter(Boolean)
+      .slice(-8);
+
+    const key = cacheKey(category, excludeIds, topic, usedContexts);
     const cached = questionCache.get(key);
 
     // Cache hit (fully loaded, not in-flight)
     if (cached) {
       questionCache.delete(key);
       dispatch({ type: 'QUESTION_LOADED', payload: cached });
-      prefetchNext(category, [...excludeIds, cached.id], nextTopic);
+      const nextContexts = [...usedContexts, extractContext(cached)].filter(Boolean).slice(-8);
+      prefetchNext(category, [...excludeIds, cached.id], nextTopic, nextContexts);
       return;
     }
 
     // Cache miss or in-flight → fetch from API
-    generateQuestion({ category, excludeIds, topic })
+    generateQuestion({ category, excludeIds, topic, usedContexts })
       .then(({ question }) => {
         if (!cancelled) {
           dispatch({ type: 'QUESTION_LOADED', payload: question });
-          prefetchNext(category, [...excludeIds, question.id], nextTopic);
+          const nextContexts = [...usedContexts, extractContext(question)].filter(Boolean).slice(-8);
+          prefetchNext(category, [...excludeIds, question.id], nextTopic, nextContexts);
         }
       })
       .catch(err => {
