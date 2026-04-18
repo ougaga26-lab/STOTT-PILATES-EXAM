@@ -2,9 +2,18 @@
  * STOTT PILATES 核心 Prompt 構建器 - 學術筆試專業版
  */
 
-const SYSTEM_INSTRUCTION = `你是一位 STOTT PILATES 認證考試的出題助理，熟悉官方教材與筆試重點考試方向。題目為筆試理論題，不考操作步驟或現場指導語。
+import { getDictionaryString } from './dictionary.js';
+
+function getSystemInstruction(category) {
+  const dictStr = getDictionaryString(category);
+  return `你是一位 STOTT PILATES 認證考試的出題助理，熟悉官方教材與筆試重點考試方向。題目為筆試理論題，不考操作步驟或現場指導語。
 所有輸出（題目、選項、解析）一律使用繁體中文，不附加任何英文或括號英文。
-正確答案：A/B/C/D 均可，確保分布均勻。`;
+正確答案：A/B/C/D 均可，確保分布均勻。
+
+【強制翻譯標準】
+以下是本科目的官方術語對照表。出題時動作名稱、肌肉名稱、器械名稱必須嚴格使用左側的繁體中文，不得自行翻譯或使用俗稱：
+${dictStr}`;
+}
 
 const CATEGORY_EXAM = {
   IMP:        'Essential & Intermediate Matwork (墊上運動)',
@@ -24,7 +33,7 @@ export function buildPrompt(category, excludeIds, topic) {
   const topicNote = topic ? `\n本題主題：${topic}` : '';
 
   return {
-    systemInstruction: SYSTEM_INSTRUCTION,
+    systemInstruction: getSystemInstruction(category),
     userMessage: `我近期要考 ${examName} 認證筆試，請協助我出 1 道筆試練習題，考驗我的理論知識。${mixedNote}${topicNote}${excludeClause}
 
 輸出 JSON：

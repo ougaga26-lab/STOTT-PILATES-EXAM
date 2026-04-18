@@ -17,10 +17,23 @@ const MOVEMENT_TOPICS = [
   '體態分析與動作變體',  // 10
 ];
 
+const ICCB_TOPICS = [
+  '凱迪拉克 — 目標肌肉與穩定肌',        // 1
+  '平衡椅 — 五大原則應用',               // 2
+  '弧型桶 — 體態分析與動作變體',         // 3
+  '梯桶 — 解剖學',                       // 4
+  '凱迪拉克 — 五大原則應用',             // 5
+  '脊柱矯正器 — 目標肌肉與穩定肌',      // 6
+  '平衡椅 — 體態分析與動作變體',         // 7
+  '梯桶 — 目標肌肉與穩定肌',            // 8
+  '凱迪拉克 — 解剖學',                   // 9
+  '弧型桶 — 五大原則應用',              // 10
+];
+
 const TOPIC_SEQUENCES = {
   IMP:   MOVEMENT_TOPICS,
   IR:    MOVEMENT_TOPICS,
-  ICCB:  MOVEMENT_TOPICS,
+  ICCB:  ICCB_TOPICS,
   MIXED: MOVEMENT_TOPICS,
   PRINCIPLES: [
     'Breathing',
