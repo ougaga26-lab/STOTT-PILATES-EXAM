@@ -161,7 +161,22 @@ function prefetchNext(category, excludeIds, topic, usedContexts) {
 export function useQuizSession() {
   const state = useQuiz();
   const dispatch = useQuizDispatch();
-  const { phase, category, sessionQuestions } = state;
+  const { phase, category, sessionQuestions, totalQuestions } = state;
+
+  // ── Backup prefetch on REVEALED ─────────────────────────────────
+  // Fires when user sees the answer, ensuring the next question is
+  // in-flight even if they answer faster than the initial prefetch.
+  useEffect(() => {
+    if (phase !== PHASES.REVEALED || !category) return;
+    const nextIndex = sessionQuestions.length; // next question index
+    if (nextIndex >= totalQuestions) return;   // last question, skip
+
+    const excludeIds = sessionQuestions.map(q => q.id);
+    const nextTopic = getTopic(category, nextIndex);
+    const usedContexts = sessionQuestions
+      .map(extractContext).filter(Boolean).slice(-8);
+    prefetchNext(category, excludeIds, nextTopic, usedContexts);
+  }, [phase]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (phase !== PHASES.LOADING || !category) return;
